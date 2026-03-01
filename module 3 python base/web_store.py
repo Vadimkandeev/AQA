@@ -35,27 +35,45 @@ class ShoppingCart:
         self.customer_name = customer_name
         self.items = {}
 
+
     def add_item(self, product, quantity):
-        if Product.stock == 0:
+        if product.stock == 0:
             raise DataError("Товар закончился")
-        elif Product.stock < quantity:
+        elif product.stock < quantity:
             raise DataError("Товара недостаточно. Уменьшите количество")
         else:
             self.items[product] = quantity
-            Product.stock -= quantity
-
-
 
 
     def remove_item(self, product_name):
-        if
-        pass
+        try:
+            del self.items[product_name]
+        except KeyError:
+            print("Товар не найден")
+
 
     def calculate_total(self):
-        pass
+        total_sum = 0
+        for product, quantity in self.items.items():
+            total_sum += product.price * quantity
+        return total_sum
 
     def get_cart_info(self):
-        pass
+        if not self.items:
+            return "Корзина пуста"
+        else:
+            for product, quantity in self.items.items():
+                return  f"Наименование: {product.name}, цена:{product.price}, количество: {quantity},\
+общая сумма: {self.calculate_total()}"
 
     def checkout(self):
-        pass
+        """
+        Оформить заказ (уменьшить stock у всех товаров)
+        """
+        if not self.items:
+            return "Корзина пуста"
+        else:
+            for product, quantity in self.items.items():
+                product.stock -= quantity
+
+
