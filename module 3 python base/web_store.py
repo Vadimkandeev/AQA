@@ -76,4 +76,4 @@ class ShoppingCart:
             for product, quantity in self.items.items():
                 product.stock -= quantity
 
-
+#7777777777777777777777777777777777
