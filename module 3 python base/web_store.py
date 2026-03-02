@@ -15,20 +15,20 @@ class Product:
             Количество на складе: {self.stock}."
 
     def is_available(self):
-        if self.stock > 0:
-            return True
+        return self.stock > 0
 
-    def reduce_stock(self):
-        if self.stock == 0:
-            return f"Товар закончился"
+
+    def reduce_stock(self, quantity):
+        if self.stock < quantity:
+            raise DataError("Недостаточно товара")
         else:
-            self.stock -= 1
+            self.stock -= quantity
 
-    def add_stock(self):
-        self.stock += 1
+    def add_stock(self, quantity):
+        self.stock += quantity
 
 
-
+# ------------------------------------------------------------------
 
 class ShoppingCart:
     def __init__(self, customer_name):
@@ -42,29 +42,53 @@ class ShoppingCart:
         elif product.stock < quantity:
             raise DataError("Товара недостаточно. Уменьшите количество")
         else:
-            self.items[product] = quantity
+            self.items[product] = {"quantity": quantity, "selected": False}
 
 
-    def remove_item(self, product_name):
+    def remove_item(self, product):
         try:
-            del self.items[product_name]
+            del self.items[product]
         except KeyError:
             print("Товар не найден")
 
 
     def calculate_total(self):
         total_sum = 0
-        for product, quantity in self.items.items():
-            total_sum += product.price * quantity
+        for product, data in self.items.items():
+            if data["selected"] == True:
+                total_sum += product.price * data["quantity"]
         return total_sum
 
     def get_cart_info(self):
+        cart_list = []
         if not self.items:
             return "Корзина пуста"
         else:
-            for product, quantity in self.items.items():
-                return  f"Наименование: {product.name}, цена:{product.price}, количество: {quantity},\
-общая сумма: {self.calculate_total()}"
+            for product, data in self.items.items():
+                quantity = data["quantity"]
+                selected = data["selected"]
+                cart_list.append(f"Наименование: {product.name}, цена:{product.price}, количество: {quantity},\
+                выбран: {data['selected']}")
+        cart_list.append(f"Общая сумма: {self.calculate_total()}")
+        return "\n".join(cart_list)
+
+    def select_item(self, product):
+        """
+        Выделяем товар в корзине для поупки
+        """
+        if product not in self.items:
+            raise DataError("Товара нет в корзине")
+        self.items[product]["selected"] = True
+
+
+    def unselect_item(self, product):
+        """
+        Снимаем выделение с товара
+        """
+        if product not in self.items:
+            raise DataError("Товара нет в корзине")
+        self.items[product]["selected"] = False
+
 
     def checkout(self):
         """
@@ -73,7 +97,23 @@ class ShoppingCart:
         if not self.items:
             return "Корзина пуста"
         else:
-            for product, quantity in self.items.items():
-                product.stock -= quantity
+            for product in list(self.items.keys()):
+                data = self.items[product]
+                quantity = data["quantity"]
+                selected = data["selected"]
+                if selected == True:
+                    if product.stock < quantity:
+                        raise DataError("Товара недостаточно. Уменьшите количество")
+                    else:
+                        product.stock -= quantity
+                        self.remove_item(product)
+        return "Заказ оформлен"
 
-#7777777777777777777777777777777777
+
+
+
+
+
+
+
+
