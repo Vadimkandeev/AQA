@@ -78,12 +78,6 @@ class Developer:
 
 
 
-project = Project("My_notepad")
 
-desktop_task = Task()
-
-project.add_task(desktop_task)
-
-project.get_progress()
 
 
