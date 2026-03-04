@@ -24,7 +24,7 @@ class Project:
     def add_task(self, task):
         self.tasks.append(task)
 
-
+#--------------------------------------------------------------------
 
 class Task:
     def __init__(self):
@@ -48,7 +48,7 @@ class Task:
             raise DataError(f"Задача уже назначена на {self.assigned_to.name}")
         self.assigned_to = developer
 
-
+#-------------------------------------------------------------------------------
 
 
 class Developer:
