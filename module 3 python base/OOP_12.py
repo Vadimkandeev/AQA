@@ -12,64 +12,41 @@ class BankAccount:
         self.balance += addition
         return f"Пополнение на {addition}Р, баланс {self.balance}P."
 
-    def withdraw(self, subtraction):
+    def _data_verification(self, subtraction):
         if subtraction <= 0:
             raise ValueError("Сумма должна быть больше нуля")
-        elif self.balance < subtraction:
-            raise DataError("На счету недостаточно средств. Уменьшите сумму снятия")
-        self.balance -= subtraction
-        return f"Снятие средств в сумме {subtraction}Р, баланс {self.balance}Р"
 
+    def _commission(self, subtraction):
+        return 0
+
+    def _message(self, subtraction, commission_sum):
+        return f"Снятие средств в сумме {subtraction}Р, в том числе комиссия: {commission_sum}. Баланс {self.balance}Р"
+
+    def withdraw(self, subtraction):
+        self._data_verification(subtraction)
+        commission_sum = self._commission(subtraction)
+        total = subtraction + commission_sum
+        if self.balance < total:
+            raise DataError("На счету недостаточно средств.")
+        self.balance -= total
+        return  self._message(subtraction, commission_sum)
 #-------------------------------------------------------------------------
 
 class SavingAccount(BankAccount):
-
-    def withdraw(self, subtraction):
-        if subtraction <= 0:
-            raise ValueError("Сумма должна быть больше нуля")
-        elif self.balance < subtraction:
-            raise DataError("На счету недостаточно средств. Уменьшите сумму снятия")
-        self.balance -= (subtraction + subtraction * 0.01)
-        return f"Снятие средств в сумме {subtraction}Р,  в том числе комиссия 1% ({subtraction*0.1})P, баланс {self.balance}Р"
-
+    def _commission(self, subtraction):
+        return subtraction * 0.01
 #------------------------------------------------------------------------
 
 class CheckingAccount(BankAccount):
-
-    def __init__(self, balance):
-        super().__init__(balance)
-
-
-    def withdraw(self, subtraction):
-        commission = 0
-        if subtraction <= 0:
-            raise ValueError("Сумма должна быть больше нуля")
-        elif self.balance < subtraction:
-            raise DataError("На счету недостаточно средств. Уменьшите сумму снятия")
+    def _commission(self, subtraction):
         if subtraction < 1000:
-            self.balance -= subtraction
-        else:
-            commission = subtraction * 0.02
-            self.balance -= (subtraction + commission)
-        return f"Снятие средств в сумме {subtraction}Р, в том числе {commission}Р комиссии, баланс {self.balance}Р"
-
+            return 0
+        return subtraction * 0.02
 #------------------------------------------------------------------------
 
 class PremiumAccount(BankAccount):
-    def __init__(self, balance):
-        super().__init__(balance)
-
-
-    def withdraw(self, subtraction):
-        commission = 0
-        if subtraction <= 0:
-            raise ValueError("Сумма должна быть больше нуля")
-        elif self.balance < subtraction:
-            raise DataError("На счету недостаточно средств. Уменьшите сумму снятия")
+    def _commission(self, subtraction):
         if self.balance >= 10000:
-            self.balance -= subtraction
+            return 0
         else:
-            commission = subtraction * 0.02
-            self.balance -= (subtraction + commission)
-        return f"Снятие средств в сумме {subtraction}Р, в том числе {commission}Р комиссии, баланс {self.balance}Р"
-
+            return subtraction * 0.03
