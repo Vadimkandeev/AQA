@@ -39,4 +39,4 @@ order_data = {
 Вызывается метод PaymentProcessor, который списывает с карты стоимость закала + стоимость доставки
 Каждый шаг выводится в лог.
 
-https://chatgpt.com/c/699cb047-1abc-832e-b9ae-dfbe8e54be81
+https://chatgpt.com/c/69b1a1bc-ee54-8332-b2ec-731abe733451

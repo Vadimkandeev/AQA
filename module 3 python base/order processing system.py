@@ -96,28 +96,44 @@ class InventoryProcessor(OrderProcessor):
 
             for key in items:
                     warehouse[key] -= items[key]
+
 #-----------------------------------------------------------------------
 
+class ShippingProcessor(InventoryProcessor):
+    def validate_address(self, address):
+        """
+        Это метод проверки валидности адреса
+        """
+        return True
 
+    def total_tax(self, transport_tax):
+        """
+        Это метод по рассчету стоимости достваки
+        """
+        return transport_tax.calculate()
 
+    def process_order(self, order_data, transport_tax):
+        address = order_data["delivery_address"]
 
-
+        if super().process_order(order_data):
+            if not self.validate_address(address):
+                self.log.append(f"{datetime.now()}. Некорректное указание адреса")
+                raise DataError("Некорректное указание адреса")
+            self.shipping_cost = self.total_tax(transport_tax)
+            self.log.append(f"{datetime.now()}. Сумма доставки рассчитана")
 
 
 
 #----------------------------------------------------------------------
-class ShippingProcessor(OrderProcessor):
-    def __init__(self):
-        pass
-#----------------------------------------------------------------------
-class PaymentProcessor(OrderProcessor):
-    def __init__(self):
-        super().__init__()
-        pass
-
-    def process_order(self, order_data):
-        total = order_data["total price"]
-        if order_data["card_balance"] < total:
-            self.log.append(f"{self.data}. Сумма заказа превышает баланс карты")
-            raise DataError(f"Сумма заказа превышает баланс карты")
+class PaymentProcessor(ShippingProcessor):
+    def process_order(self, order_data, transport_tax):
+        if super().process_order(order_data):
+            total = order_data["total_price"]
+            if order_data["card_balance"] < total + self.shipping_cost:
+                self.log.append(f"{datetime.now()}. Сумма заказа превышает баланс карты")
+                raise DataError(f"Сумма заказа превышает баланс карты")
+            order_data["card_balance"] -= total + self.shipping_cost
+            self.log.append(f"{datetime.now()}. Проведено списание средств с кары в сумме\
+{total + self.shipping_cost}, включая стоимость доставки: {self.shipping_cost}. Баланс каты:\
+{order_data['card_balance']}")
 #-----------------------------------------------------------------------
