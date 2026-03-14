@@ -1,11 +1,15 @@
 class Animal:
     species = []
-    def add_species(self, animal):
-        if animal not in self.species:
-            self.species.append(animal)
 
-    def show_species(self, species):
-        return species
-    def __init__(self):
-        self.add_species()
-        self.show_species()
+    def __init__(self, animal):
+        self.add_species(animal)
+
+        @classmethod
+        def add_species(cls, animal):
+            if animal not in cls.species:
+                cls.species.append(animal)
+        @classmethod
+        def show_species(cls):
+            return cls.species
+
+
