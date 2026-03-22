@@ -1,5 +1,3 @@
-from typing import TypeVarTuple
-
 
 class Rectangle:
     def __init__(self, width, height):
