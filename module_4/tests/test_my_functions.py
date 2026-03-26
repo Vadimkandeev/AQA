@@ -16,11 +16,7 @@
 #     def test_add_string(self):
 #         assert add("test", "string") == "test string"
 
-import pytest
 
-@pytest.fixture
-def input_data():
-    return [1, 2, 3, 4, 5]
 
 def test_sum(input_data):
     assert sum(input_data) == 15
