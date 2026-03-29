@@ -1,5 +1,6 @@
 import requests
 
+
 data = {
     "firstname": "Jim",
     "lastname": "Brown",
@@ -13,8 +14,14 @@ data = {
 }
 
 url = 'https://restful-booker.herokuapp.com/booking'
-response = (requests.post(url, json=data))
-print(response.json())
-assert response.status_code == 200, "error"
-assert "bookingid" in response.json(), "Ошибка проверки"
 
+response = requests.post(url, json=data)
+my_dict = response.json()
+
+print(response.status_code)
+print(my_dict["bookingid"])
+print(response.json()['booking']['lastname'])
+
+assert  response.status_code == 200, "Errore code"
+assert my_dict["bookingid"]
+assert response.json()['booking']['lastname']
