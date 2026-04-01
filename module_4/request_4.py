@@ -15,7 +15,7 @@ data = {
 url = 'https://restful-booker.herokuapp.com/booking'
 
 response = requests.post(url, json=data)
-
+print(response)
 body = response.json()
 assert response.status_code == 200
 assert body["booking"]["firstname"] == "Jim", "Firstname ERROR"
