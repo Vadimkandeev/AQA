@@ -1,0 +1,28 @@
+import requests
+
+url = "https://httpbin.org/get"
+response = requests.get(url)
+
+print("----------------------")
+print(f"Status Code: {response.status_code}")
+print("----------------------")
+print(f"Headers: {response.headers}")
+print("----------------------")
+print(f"Content (bytes): {response.content}")
+print("----------------------")
+print(f"Text (string): {response.text}")
+print("----------------------")
+print(f"URL: {response.url}")
+print("----------------------")
+print(f"History: {response.history}")
+print("----------------------")
+print(f"Cookies: {response.cookies}")
+print("----------------------")
+print(f"Encoding: {response.encoding}")
+print("----------------------")
+print(f"Elapsed Time: {response.elapsed}")
+print("----------------------")
+print(f"Request: {response.request}")
+print("----------------------")
+print(f"Reason: {response.reason}")
+print("----------------------")
