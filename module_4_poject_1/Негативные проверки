@@ -1,0 +1,151 @@
+🔵 1. GET — негативные проверки
+❌ 1. Ресурс не существует
+def test_get_nonexistent_booking():
+    response = requests.get(f"{BASE_URL}/999999")
+
+    assert response.status_code == 404
+❌ 2. Неверный формат ID
+def test_get_booking_invalid_id():
+    response = requests.get(f"{BASE_URL}/abc")
+
+    assert response.status_code in (400, 404)
+❌ 3. Без авторизации (если требуется)
+def test_get_without_auth():
+    response = requests.get(BASE_URL)
+
+    assert response.status_code == 401
+❌ 4. Неверные query параметры
+def test_get_with_invalid_filter():
+    response = requests.get(BASE_URL, params={"checkin": "invalid-date"})
+
+    assert response.status_code == 400
+🟢 2. POST — негативные проверки
+❌ 1. Отсутствует обязательное поле
+def test_create_booking_without_firstname():
+    data = {
+        "lastname": "Doe",
+        "totalprice": 100,
+        "depositpaid": True
+    }
+
+    response = requests.post(BASE_URL, json=data)
+
+    assert response.status_code == 400
+❌ 2. Неверный тип данных
+def test_create_booking_invalid_price_type():
+    data = {
+        "firstname": "John",
+        "lastname": "Doe",
+        "totalprice": "one hundred",  # ошибка
+        "depositpaid": True
+    }
+
+    response = requests.post(BASE_URL, json=data)
+
+    assert response.status_code == 400
+❌ 3. Пустое тело запроса
+def test_create_booking_empty_body():
+    response = requests.post(BASE_URL, json={})
+
+    assert response.status_code == 400
+❌ 4. Неверный JSON (сломанный)
+def test_create_booking_invalid_json():
+    response = requests.post(BASE_URL, data="invalid_json")
+
+    assert response.status_code == 400
+🟡 3. PUT — негативные проверки
+
+👉 PUT = полное обновление
+
+❌ 1. Обновление несуществующего ресурса
+def test_put_nonexistent_booking():
+    response = requests.put(f"{BASE_URL}/999999", json={})
+
+    assert response.status_code == 404
+❌ 2. Без авторизации
+def test_put_without_auth():
+    response = requests.put(f"{BASE_URL}/1", json={})
+
+    assert response.status_code == 401
+❌ 3. Неполное тело (для PUT это ошибка)
+def test_put_incomplete_data():
+    data = {
+        "firstname": "John"
+    }
+
+    response = requests.put(f"{BASE_URL}/1", json=data)
+
+    assert response.status_code == 400
+❌ 4. Неверные типы
+def test_put_invalid_types():
+    data = {
+        "firstname": "John",
+        "lastname": "Doe",
+        "totalprice": "invalid",
+        "depositpaid": True
+    }
+
+    response = requests.put(f"{BASE_URL}/1", json=data)
+
+    assert response.status_code == 400
+🟣 4. PATCH — негативные проверки
+
+👉 PATCH = частичное обновление
+
+❌ 1. Неверное поле
+def test_patch_invalid_field():
+    data = {
+        "unknown_field": "value"
+    }
+
+    response = requests.patch(f"{BASE_URL}/1", json=data)
+
+    assert response.status_code == 400
+❌ 2. Неверный тип данных
+def test_patch_invalid_type():
+    data = {
+        "totalprice": "cheap"
+    }
+
+    response = requests.patch(f"{BASE_URL}/1", json=data)
+
+    assert response.status_code == 400
+❌ 3. Без авторизации
+def test_patch_without_auth():
+    data = {"firstname": "Jane"}
+
+    response = requests.patch(f"{BASE_URL}/1", json=data)
+
+    assert response.status_code == 401
+❌ 4. Несуществующий ресурс
+def test_patch_nonexistent():
+    data = {"firstname": "Jane"}
+
+    response = requests.patch(f"{BASE_URL}/999999", json=data)
+
+    assert response.status_code == 404
+🔥 Важное различие PUT vs PATCH
+Метод	Требование
+PUT	❗ Полное тело обязательно
+PATCH	✔ Можно частично
+🧠 Как формулировать ожидаемый результат
+
+Всегда так:
+
+“Система должна вернуть корректную ошибку”
+
+Примеры:
+
+400 → плохие данные
+401 → нет авторизации
+403 → нет прав
+404 → не найдено
+🚀 Уровень выше (что ценится)
+
+Хороший негативный тест проверяет НЕ только статус:
+
+assert response.status_code == 400
+assert response.json()["error"] == "Invalid input"
+💬 Итог
+
+Негативные тесты — это:
