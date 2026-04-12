@@ -1,6 +1,6 @@
 import pytest
 import requests
-from constans import BASE_URL, HEADERS, AUTH_DATA
+from constans import BASE_URL, HEADERS, AUTH_DATA, INVALID_AUTH_DATA
 
 
 @pytest.fixture
@@ -11,6 +11,24 @@ def auth_session():
 
     #Получаем токен
     response = requests.post(f"{BASE_URL}/auth", headers=HEADERS, json=AUTH_DATA)
+
+    assert response.status_code == 200, "Authorization Error"
+    token = response.json().get("token")
+    assert token is not None, "Token is not access"
+
+
+    # Добавляем токен в Cookie
+    session.headers.update({"Cookie": f"token={token}"})
+    return session
+
+@pytest.fixture #Невалидный тест с ошибкой авторизации
+def invalid_auth_session():
+    #Create session
+    session = requests.Session()
+    session.headers.update(HEADERS)
+
+    #Получаем токен
+    response = requests.post(f"{BASE_URL}/auth", headers=HEADERS, json=INVALID_AUTH_DATA)
 
     assert response.status_code == 200, "Authorization Error"
     token = response.json().get("token")
@@ -35,3 +53,34 @@ def booking_data():
         },
         "additionalneeds": "Piano"
     }
+
+@pytest.fixture
+def patch_booking_data():
+    return {
+        "firstname": "Ryan",
+        "lastname": "Reynolds",
+        "totalprice": 150000,
+        "depositpaid": True,
+        "bookingdates": {
+            "checkin": "2024-04-05",
+            "checkout": "2024-04-08"
+        },
+        "additionalneeds": "Breakfast"
+    }
+
+
+@pytest.fixture
+def invalid_booking_data():
+    return {
+        "firstname": "Ryan",
+        "lastname": "Reynolds",
+        "totalprice": 150000,
+        "depositpaid": True,
+        "bookingdates": {
+            "checkin": "2024-04-05",
+            "checkout": "2024-04-08"
+        },
+        "additionalneeds": "Breakfast"
+    }
+
+
