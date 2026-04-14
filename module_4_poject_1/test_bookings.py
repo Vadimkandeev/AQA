@@ -1,7 +1,7 @@
-from constans import BASE_URL, INVALID_BASE_URL
+from constans import BASE_URL
 
 
-def test_create_booking(auth_session, booking_data, patch_booking_data):
+def test_create_booking(auth_session, booking_data, patch_booking_data, put_booking_data):
     response = auth_session.post(f"{BASE_URL}/booking", json=booking_data)
     assert  response.status_code == 200
 
@@ -22,11 +22,11 @@ def test_create_booking(auth_session, booking_data, patch_booking_data):
     assert get_booking.status_code == 200
 
     #Обновляем бронь (Put)
-    get_booking = auth_session.patch(f"{BASE_URL}/booking/{booking_id}", json=booking_data)
+    get_booking = auth_session.put(f"{BASE_URL}/booking/{booking_id}", json=put_booking_data)
     assert get_booking.status_code == 200
     # Проверяем изменения
     get_booking = auth_session.get(f"{BASE_URL}/booking/{booking_id}")
-    assert get_booking.json()['firstname'] == booking_data['firstname']
+    assert get_booking.json()['firstname'] == put_booking_data['firstname']
     assert get_booking.status_code == 200
 
 
@@ -40,7 +40,60 @@ def test_create_booking(auth_session, booking_data, patch_booking_data):
 
 
 
-# Негативные проверки
+# Негативные проверки-----------------------------------------------
 
-def test_negative(auth_session, booking_data):
-    pass
+def test_negative(auth_session, booking_data, patch_booking_data, invalid_type_booking_data, empty_booking_data, \
+                  no_required_field_booking_data, non_exist_field_booking_data, put_booking_data):
+
+    response = auth_session.post(f"{BASE_URL}/booking", json=booking_data)
+    assert response.status_code == 200
+
+    booking_id = response.json().get("bookingid")
+    assert booking_id is not None
+
+    # Негативные проверки GET
+    # Несуществующий ID
+    get_booking = auth_session.get(f"{BASE_URL}/booking/{999999999}")
+    assert get_booking.status_code == 404
+
+
+    # Негативные проверки POST
+    # Отсутствует обязательное поле
+    response = auth_session.post(f"{BASE_URL}/booking", json=no_required_field_booking_data)
+    assert response.status_code == 500
+
+    # Пустое тело запроса
+    response = auth_session.post(f"{BASE_URL}/booking", json=empty_booking_data)
+    assert response.status_code == 500
+
+    # Негативные проверки PUT
+    # Несуществующий ресурс
+    response = auth_session.put(f"{BASE_URL}/9999999", json=put_booking_data)
+    assert response.status_code == 404
+
+    # Отсутствует обязательное поле
+    get_booking = auth_session.put(f"{BASE_URL}/booking/{booking_id}", json=no_required_field_booking_data)
+    assert get_booking.status_code == 400
+
+
+    # Негативные проверки PATCH
+    # Несуществующее поле
+    response = auth_session.patch(f"{BASE_URL}/booking/{booking_id}", json=non_exist_field_booking_data)
+    assert response.status_code == 404
+
+    # Не верный тип данных
+    response = auth_session.patch(f"{BASE_URL}/booking/{booking_id}", json=invalid_type_booking_data)
+    assert response.status_code == 404
+
+
+    # Удаляем
+    delete_booking = auth_session.delete(f"{BASE_URL}/booking/{booking_id}")
+    assert delete_booking.status_code == 201
+
+
+
+
+
+
+
+

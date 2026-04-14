@@ -1,6 +1,6 @@
 import pytest
 import requests
-from constans import BASE_URL, HEADERS, AUTH_DATA, INVALID_AUTH_DATA
+from constans import BASE_URL, HEADERS, AUTH_DATA
 
 
 @pytest.fixture
@@ -54,33 +54,51 @@ def booking_data():
         "additionalneeds": "Piano"
     }
 
+
+@pytest.fixture
+def put_booking_data():
+    return {
+        "firstname": "Sandra",
+        "lastname": "Bullock",
+        "totalprice": 2500000,
+        "depositpaid": True,
+        "bookingdates": {
+            "checkin": "2024-04-05",
+            "checkout": "2024-04-08"
+        },
+        "additionalneeds": "Piano"
+    }
+
 @pytest.fixture
 def patch_booking_data():
     return {
         "firstname": "Ryan",
-        "lastname": "Reynolds",
-        "totalprice": 150000,
-        "depositpaid": True,
-        "bookingdates": {
-            "checkin": "2024-04-05",
-            "checkout": "2024-04-08"
-        },
-        "additionalneeds": "Breakfast"
+        "lastname": "Reynolds"
     }
 
 
 @pytest.fixture
-def invalid_booking_data():
+def invalid_type_booking_data():
     return {
-        "firstname": "Ryan",
-        "lastname": "Reynolds",
-        "totalprice": 150000,
-        "depositpaid": True,
-        "bookingdates": {
-            "checkin": "2024-04-05",
-            "checkout": "2024-04-08"
-        },
-        "additionalneeds": "Breakfast"
+        "totalprice": "150000"
     }
 
+@pytest.fixture
+def empty_booking_data():
+    return {}
 
+@pytest.fixture
+def no_required_field_booking_data():
+    return {
+        "firstname": "Ryan",
+        "lastname": "Gosling",
+        "totalprice": 150000,
+        "depositpaid": True,
+        "additionalneeds": "Piano"
+    }
+
+@pytest.fixture
+def non_exist_field_booking_data():
+    return {
+        "may_flavor": "rose"
+    }
