@@ -6,3 +6,4 @@ HEADERS = {
 
 LOGIN_ENDPOINT = "/login"
 REGISTER_ENDPOINT = "/register"
+CONFIRM_ENDPOINT = "/confirm"
