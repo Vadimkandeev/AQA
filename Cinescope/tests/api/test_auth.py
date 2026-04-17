@@ -51,5 +51,6 @@ class TestRegistration:
 
 
 class TestAuth:
-        def test_autentification_user(self, )
+        def test_autentification_user(self):
+            pass
 
