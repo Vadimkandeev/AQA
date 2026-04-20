@@ -38,7 +38,7 @@ def created_user(test_user):
 def tokens(test_user, created_user):
     login_url = f"{BASE_URL}{LOGIN_ENDPOINT}"
     login_data = {
-        "email": created_user["email"],
+        "email": test_user["email"],
         "password": test_user["password"]
     }
     response = requests.post(login_url, json=login_data, headers=HEADERS)
