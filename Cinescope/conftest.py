@@ -4,7 +4,7 @@ import pytest
 from utils.data_generator import DataGenerator
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def test_user():
     """
     Генерация случайного пользователя для тестов.
@@ -23,18 +23,19 @@ def test_user():
 
 
 # Регистрируем нового пользователя
-@pytest.fixture(scope = "session")
+@pytest.fixture(scope = "function")
 def created_user(test_user):
     register_url = f"{BASE_URL}{REGISTER_ENDPOINT}"
     response = requests.post(register_url, json=test_user, headers=HEADERS)
     body = response.json()
+    print(body)
     assert response.status_code == 201, "Ошибка регистрации пользователя"
     assert body['fullName'] == test_user['fullName']
     return body
 
 
 # Логинимся для получения токена (аутентификация)
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def tokens(test_user, created_user):
     login_url = f"{BASE_URL}{LOGIN_ENDPOINT}"
     login_data = {
