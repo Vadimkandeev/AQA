@@ -4,6 +4,7 @@ import pytest
 from utils.data_generator import DataGenerator
 
 
+
 @pytest.fixture(scope="function")
 def test_user():
     """
@@ -21,6 +22,17 @@ def test_user():
         "roles": ["USER"]
     }
 
+@pytest.fixture(scope = "function")
+def test_create_user(test_user):
+    """
+    Делаем копию словаря и модифицируем его для запросов раздела "Пользователь"
+    """
+    new_body = test_user.copy()
+    del new_body["passwordRepeat"]
+    del new_body["roles"]
+    new_body["verified"] = True
+    new_body["banned"] = False
+    return new_body
 
 # Регистрируем нового пользователя
 @pytest.fixture(scope = "function")
