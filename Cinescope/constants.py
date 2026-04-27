@@ -4,6 +4,11 @@ HEADERS = {
     "Accept": "application/json"
 }
 
+ADMIN_DATA = {
+    "email": "api1@gmail.com",
+    "password": "asdqwe123Q"
+}
+
 LOGIN_ENDPOINT = "/login"
 REGISTER_ENDPOINT = "/register"
 CONFIRM_ENDPOINT = "/confirm"

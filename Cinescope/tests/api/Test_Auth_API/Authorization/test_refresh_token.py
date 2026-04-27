@@ -6,11 +6,11 @@ from constants import BASE_URL, HEADERS, REFRESH_TOKENS_ENDPOINT
 
 # Обновление токена
 class TestRefreshToken:
-    def test_refresh_token(self, test_user, created_user):
+    def test_refresh_token(self, auth_user_headers):
         # URL для обновления токена
         refresh_url = f"{BASE_URL}{REFRESH_TOKENS_ENDPOINT}"
 
-        response = requests.get(refresh_url, headers=HEADERS)
+        response = requests.get(refresh_url, headers=auth_user_headers)
 
         # Логируем ответ для диагностики
         print(f"Response status: {response.status_code}")

@@ -1,5 +1,5 @@
 import requests
-from constants import BASE_URL, HEADERS, REGISTER_ENDPOINT, LOGIN_ENDPOINT
+from constants import BASE_URL, HEADERS, REGISTER_ENDPOINT, LOGIN_ENDPOINT, ADMIN_DATA
 import pytest
 from utils.data_generator import DataGenerator
 
@@ -23,7 +23,7 @@ def test_user():
     }
 
 @pytest.fixture(scope = "function")
-def test_create_user(test_user):
+def create_user_by_admin(test_user):
     """
     Делаем копию словаря и модифицируем его для запросов раздела "Пользователь"
     """
@@ -46,9 +46,9 @@ def created_user(test_user):
     return body
 
 
-# Логинимся для получения токена (аутентификация)
+# Логинимся для получения токена ПОЛЬЗОВАТЕЛЯ (аутентификация)
 @pytest.fixture(scope="function")
-def tokens(test_user, created_user):
+def user_tokens(test_user, created_user):
     login_url = f"{BASE_URL}{LOGIN_ENDPOINT}"
     login_data = {
         "email": test_user["email"],
@@ -63,6 +63,57 @@ def tokens(test_user, created_user):
     assert data.get("refreshToken"), "refreshToken отсутствует в ответе"
     token = {"accessToken": data.get("accessToken"), "refreshToken": data.get("refreshToken")}
     return token
+
+
+
+# Логинимся для получения токена АДМИНА
+@pytest.fixture(scope="function")
+def admin_tokens():
+    login_url = f"{BASE_URL}{LOGIN_ENDPOINT}"
+    login_data = ADMIN_DATA
+    response = requests.post(login_url, json=login_data, headers=HEADERS)
+    assert response.status_code == 200, "Ошибка авторизации"
+
+    # Получаем токен
+    data = response.json()
+    assert data.get("accessToken"), "accessToken отсутствует в ответе"
+    assert data.get("refreshToken"), "refreshToken отсутствует в ответе"
+    token = {"accessToken": data.get("accessToken"), "refreshToken": data.get("refreshToken")}
+    return token
+
+
+
+# Подготавливаем заголовок для АДМИНА с токеном
+@pytest.fixture(scope="function")
+def auth_admin_headers(admin_tokens):
+    return {
+        **HEADERS,
+        "Authorization": f"Bearer {admin_tokens['accessToken']}"
+    }
+
+
+# Подготавливаем заголовок для ЮЗЕРА с токеном
+@pytest.fixture(scope="function")
+def auth_user_headers(user_tokens):
+    return {
+        **HEADERS,
+        "Authorization": f"Bearer {user_tokens['accessToken']}"
+    }
+
+def build_refresh_cookies(tokens):
+    return {
+        "refreshToken": tokens["refreshToken"]
+    }
+
+# Получаем куки для АДМИНА
+@pytest.fixture
+def admin_refresh_cookies(admin_tokens):
+    return build_refresh_cookies(admin_tokens)
+
+# Получаем куки для ПОЛЬЗОВАТЕЛЯ
+@pytest.fixture
+def user_refresh_cookies(user_tokens):
+    return build_refresh_cookies(user_tokens)
 
 
 # Cоздаём сессию
