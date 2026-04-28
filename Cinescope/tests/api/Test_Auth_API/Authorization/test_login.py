@@ -4,10 +4,10 @@ from constants import BASE_URL, HEADERS, LOGIN_ENDPOINT
 
 # Аутентификация пользователя
 class TestAuth:
-        def test_authentication_user(self, created_user, test_user):
+        def test_authentication_user(self, created_user_by_user, random_user_by_user):
             # URL для аутентификации
             authentication_url = f"{BASE_URL}{LOGIN_ENDPOINT}"
-            body = {"email": test_user["email"], "password": test_user["password"]}
+            body = {"email": random_user_by_user["email"], "password": random_user_by_user["password"]}
 
             # Отправка запроса для аутентификации
             response = requests.post(authentication_url, json=body, headers=HEADERS)
@@ -19,7 +19,7 @@ class TestAuth:
             # Проверки
             assert response.status_code == 200, "Ошибка аутентификации пользователя"
             response_data = response.json()
-            assert response_data["user"]["email"] == test_user["email"], "Email не совпадает"
+            assert response_data["user"]["email"] == random_user_by_user["email"], "Email не совпадает"
             assert "id" in response_data["user"], "ID пользователя отсутствует в ответе"
             assert "roles" in response_data["user"], "Роли отсутствуют в ответе"
             assert "USER" in response_data["user"]["roles"], "Роль пользователя отсутствует в ответе"

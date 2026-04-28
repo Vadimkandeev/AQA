@@ -5,7 +5,7 @@ from constants import BASE_URL, HEADERS,  CONFIRM_ENDPOINT
 
 # Подтверждение email
 class TestConfirmEmail:
-    def test_confirm_user_email(self,  test_user, created_user, tokens):
+    def test_confirm_user_email(self, random_user_by_user, created_user_by_user, tokens):
 
         # URL для подтверждения email
         token = tokens["accessToken"]
