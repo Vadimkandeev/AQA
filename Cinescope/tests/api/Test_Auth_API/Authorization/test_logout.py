@@ -1,3 +1,5 @@
+from requests import session
+
 import pytest
 import requests
 from constants import BASE_URL, HEADERS, LOGOUT_ENDPOINT
@@ -6,13 +8,15 @@ from constants import BASE_URL, HEADERS, LOGOUT_ENDPOINT
 
 # Выход из учетной записи и удаление токена
 class TestLogout:
-    def test_logout_user(self, user_refresh_cookies):
+    def test_logout_user(self, auth_session):
         # URL для выхода из четной записи
         logout_url = f"{BASE_URL}{LOGOUT_ENDPOINT}"
-        cookies = user_refresh_cookies
+
 
         # Отправка запрос на разлогин
-        response = requests.get(logout_url, headers=HEADERS, cookies=cookies)
+        #response = requests.get(logout_url, headers=HEADERS)
+        response = auth_session.get(logout_url)
+
 
         # Логируем ответ для диагностики
         print(f"Response status: {response.status_code}")

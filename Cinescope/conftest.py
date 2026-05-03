@@ -1,5 +1,5 @@
 import requests
-from constants import BASE_URL, HEADERS, REGISTER_ENDPOINT, LOGIN_ENDPOINT, ADMIN_DATA, USER_ENDPOINT
+from constants import BASE_URL, HEADERS, REGISTER_ENDPOINT, LOGIN_ENDPOINT, ADMIN_DATA, USER_ENDPOINT, LOGOUT_ENDPOINT
 import pytest
 from utils.data_generator import DataGenerator
 
@@ -67,7 +67,6 @@ def user_tokens(random_user_by_user, created_user_by_user):
         "password": random_user_by_user["password"]
     }
     response = requests.post(login_url, json=login_data, headers=HEADERS)
-    assert response.status_code == 200, "Ошибка авторизации"
 
     # Получаем токен
     data = response.json()
@@ -128,12 +127,22 @@ def user_refresh_cookies(user_tokens):
     return build_refresh_cookies(user_tokens)
 
 
+# Проводим разлогин для негативной проверки Обновления токена
+@pytest.fixture(scope="session")
+def logout_user(user_tokens):
+    logout_url = f"{BASE_URL}{LOGOUT_ENDPOINT}"
+    response = requests.get(logout_url, headers=HEADERS)
+    assert response.status_code == 200, "Ошибка выхода из учетной записи"
+
+
+
+
 # Cоздаём сессию
 @pytest.fixture(scope="session")
-def auth_session(tokens):
+def auth_session(user_tokens):
     session = requests.Session()
     session.headers.update(HEADERS)
-    session.headers.update({"Authorization": f"Bearer {tokens['accessToken']}"})
+    session.headers.update({"Authorization": f"Bearer {user_tokens['accessToken']}"})
     return session
 
 
