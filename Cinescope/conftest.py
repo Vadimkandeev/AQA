@@ -1,5 +1,6 @@
 import requests
-from constants import BASE_URL, HEADERS, REGISTER_ENDPOINT, LOGIN_ENDPOINT, ADMIN_DATA, USER_ENDPOINT, LOGOUT_ENDPOINT
+from constants import BASE_URL, HEADERS, REGISTER_ENDPOINT, LOGIN_ENDPOINT, ADMIN_DATA, USER_ENDPOINT, LOGOUT_ENDPOINT,\
+    JUNK_TOKEN
 import pytest
 from utils.data_generator import DataGenerator
 
@@ -101,6 +102,7 @@ def auth_admin_headers(admin_tokens):
         **HEADERS,
         "Authorization": f"Bearer {admin_tokens['accessToken']}"
     }
+
 
 
 # Подготавливаем заголовок для ЮЗЕРА с токеном
