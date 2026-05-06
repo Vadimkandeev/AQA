@@ -9,6 +9,18 @@ ADMIN_DATA = {
     "password": "asdqwe123Q"
 }
 
+BODY_FROM_CHANGE_USER_DATA = {
+    "roles": [
+        "USER"
+      ],
+    "verified": False,
+    "banned": True
+}
+
+INVALID_REFRESH_TOKEN = "11111111-1111-1111-1111-111111111111"
+
+PARAMS_FOR_GETLIST = "?pageSize=2&page=2&roles=USER&roles=ADMIN&roles=SUPER_ADMIN&createdAt=asc"
+
 LOGIN_ENDPOINT = "/login"
 REGISTER_ENDPOINT = "/register"
 CONFIRM_ENDPOINT = "/confirm"
