@@ -43,3 +43,13 @@ class DataGenerator:
         random.shuffle(password)
 
         return ''.join(password)
+
+    @staticmethod
+    def generate_random_movie_name():
+        return f"{faker.word().capitalize()} {faker.word().capitalize()}"
+
+
+
+    @staticmethod
+    def generate_random_movie_description():
+        return f"{faker.sentence(nb_words=10)}"

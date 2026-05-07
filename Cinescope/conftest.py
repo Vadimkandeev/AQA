@@ -100,7 +100,7 @@ def admin_tokens():
 def auth_admin_headers(admin_tokens):
     return {
         **HEADERS,
-        "Authorization": f"Bearer {admin_tokens['accessToken']}"
+        "Test_Authorization": f"Bearer {admin_tokens['accessToken']}"
     }
 
 
@@ -110,7 +110,7 @@ def auth_admin_headers(admin_tokens):
 def auth_user_headers(user_tokens):
     return {
         **HEADERS,
-        "Authorization": f"Bearer {user_tokens['accessToken']}"
+        "Test_Authorization": f"Bearer {user_tokens['accessToken']}"
     }
 
 def build_refresh_cookies(tokens):
@@ -138,13 +138,29 @@ def logout_user(user_tokens):
 
 
 
+# Создаем тело запроса для создания киноафиши
+@pytest.fixture(scope = "session")
+def created_random_movie():
+    movie_name = DataGenerator.generate_random_movie_name()
+    movie_description = DataGenerator.generate_random_movie_description()
+    body = {
+      "name": movie_name,
+      "imageUrl": "https://image.url",
+      "price": 100,
+      "description": movie_description,
+      "location": "SPB",
+      "published": True,
+      "genreId": 1
+    }
+    return body
+
 
 # Cоздаём сессию
 @pytest.fixture(scope="session")
 def auth_session(user_tokens):
     session = requests.Session()
     session.headers.update(HEADERS)
-    session.headers.update({"Authorization": f"Bearer {user_tokens['accessToken']}"})
+    session.headers.update({"Test_Authorization": f"Bearer {user_tokens['accessToken']}"})
     return session
 
 

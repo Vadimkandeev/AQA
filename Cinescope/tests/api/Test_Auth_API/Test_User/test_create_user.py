@@ -32,7 +32,7 @@ class TestCreateUser:
     def test_create_by_invalid_data(self, random_user_by_admin, auth_admin_headers):
         create_user_url = f"{BASE_URL}{USER_ENDPOINT}"
         invalid_headers = auth_admin_headers
-        invalid_headers["Authorization"] = JUNK_TOKEN
+        invalid_headers["Test_Authorization"] = JUNK_TOKEN
 
         response = requests.post(create_user_url, json=random_user_by_admin, headers=invalid_headers)
 
