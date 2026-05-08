@@ -17,8 +17,8 @@ class TestGetInformUser:
         print(f"Response status: {response.status_code}")
         print(f"Response body: {response.text}")
 
-        # Проверка получения статус-кода. Ожидается 201
-        assert response.status_code == 201, "Ошибка регистрации пользователя"
+        # Проверка получения статус-кода. Ожидается 200
+        assert response.status_code == 200, "Ошибка запроса данных пользователя"
         response_data = response.json()
         assert response_data["email"] == created_user_by_admin["email"], "Email не совпадает"
         assert "id" in response_data, "ID пользователя отсутствует в ответе"

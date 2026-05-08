@@ -1,6 +1,6 @@
 import requests
 from constants import BASE_URL, HEADERS, REGISTER_ENDPOINT, LOGIN_ENDPOINT, ADMIN_DATA, USER_ENDPOINT, LOGOUT_ENDPOINT,\
-    JUNK_TOKEN
+    MOVIES_ENDPOINT
 import pytest
 from utils.data_generator import DataGenerator
 
@@ -153,6 +153,46 @@ def created_random_movie():
       "genreId": 1
     }
     return body
+
+
+#Создание афиши
+@pytest.fixture(scope = "session")
+def created_movie(created_random_movie, auth_admin_headers):
+    create_movie_url = f"{BASE_URL}{MOVIES_ENDPOINT}"
+
+    body = created_random_movie
+
+    response = requests.post(create_movie_url, json=body, headers=auth_admin_headers)
+
+    # Логируем ответ для диагностики
+    print(f"Response status: {response.status_code}")
+    print(f"Response body: {response.text}")
+
+    # Проверки
+    assert response.status_code == 201, "Ошибка создания афиши"
+    response_data = response.json()
+    return response_data
+
+
+# Удаление афиши
+@pytest.fixture
+def delete_movie(auth_admin_headers, created_movie):
+    movie = created_movie
+    movie_id = movie["id"]
+
+    delete_movie_url = f"{BASE_URL}{MOVIES_ENDPOINT}/{movie_id}"
+
+    response = requests.delete(delete_movie_url, headers=auth_admin_headers)
+
+    # Логируем ответ для диагностики
+    print(f"Response status: {response.status_code}")
+    print(f"Response body: {response.text}")
+
+    # Проверка получения статус-кода. Ожидается 200
+    assert response.status_code == 200, "Ошибка удаления афиши"
+
+
+
 
 
 # Cоздаём сессию
