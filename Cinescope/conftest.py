@@ -1,10 +1,9 @@
 import requests
 from constants import BASE_URL, HEADERS, REGISTER_ENDPOINT, LOGIN_ENDPOINT, ADMIN_DATA, USER_ENDPOINT, LOGOUT_ENDPOINT,\
-    MOVIES_ENDPOINT
+    MOVIES_ENDPOINT, REVIEW_ENDPOINT
 import pytest
 from utils.data_generator import DataGenerator
-
-
+from random import randint
 
 @pytest.fixture(scope="function")
 def random_user_by_user():
@@ -175,7 +174,7 @@ def created_movie(created_random_movie, auth_admin_headers):
 
 
 # Удаление афиши
-@pytest.fixture
+@pytest.fixture(scope = "session")
 def delete_movie(auth_admin_headers, created_movie):
     movie = created_movie
     movie_id = movie["id"]
@@ -192,8 +191,28 @@ def delete_movie(auth_admin_headers, created_movie):
     assert response.status_code == 200, "Ошибка удаления афиши"
 
 
+# Создаем строку параметров для запроса списка афиш
+@pytest.fixture(scope = "session")
+def created_params_for_get_list():
+    params = f"?pageSize={randint(1, 10)}&page={randint(1, 5)}&minPrice={randint(1, 2)}\
+    &maxPrice={randint(20, 1000)}&locations=MSK&locations=SPB&published=true&genreId=1&createdAt=asc"
+    return params
 
 
+# Создаем отзыв о фильме
+@pytest.fixture(scope = "session")
+def created_review(auth_admin_headers, created_movie, created_body_from_review):
+
+    response_body = created_movie
+
+    movie_id = response_body["id"]
+
+    url_create_review = f"{BASE_URL}{MOVIES_ENDPOINT}/:{movie_id}{REVIEW_ENDPOINT}"
+
+    response = requests.post(url_create_review, json=created_body_from_review, headers=auth_admin_headers)
+
+    # Проверки
+    assert response.status_code == 200, "Ошибка создания отзыва"
 
 # Cоздаём сессию
 @pytest.fixture(scope="session")

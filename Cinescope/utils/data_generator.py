@@ -1,6 +1,7 @@
 import random
 import string
 from faker import Faker
+from random import randint
 
 faker = Faker()
 
@@ -53,3 +54,15 @@ class DataGenerator:
     @staticmethod
     def generate_random_movie_description():
         return f"{faker.sentence(nb_words=10)}"
+
+    # Создаем тело запроса отзыва
+    @staticmethod
+    def created_body_from_review():
+        body = {
+
+            "rating": randint(1, 10),
+            "text": faker.sentence(nb_words=10)
+
+        }
+
+        return body

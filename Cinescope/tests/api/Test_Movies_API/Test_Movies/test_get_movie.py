@@ -28,12 +28,14 @@ class TestGetMovie:
         assert response_data["location"] == movie_location["location"], "Место показа фильма отсутствует в афише"
 
 
-    def test_negative_get_delete_movie(self, auth_admin_headers, created_movie, delete_movie):
+    def test_negative_get_delete_movie(self, auth_admin_headers, created_movie):
+
         movie = created_movie
         movie_id = movie["id"]
 
         get_movie_url = f"{BASE_URL}{MOVIES_ENDPOINT}/{movie_id}"
 
+        requests.delete(get_movie_url, headers=auth_admin_headers)
         response = requests.get(get_movie_url, headers=auth_admin_headers)
 
         # Логируем ответ для диагностики
