@@ -201,18 +201,21 @@ def created_params_for_get_list():
 
 # Создаем отзыв о фильме
 @pytest.fixture(scope = "session")
-def created_review(auth_admin_headers, created_movie, created_body_from_review):
+def created_review(auth_admin_headers, created_movie):
 
     response_body = created_movie
 
     movie_id = response_body["id"]
 
+    body = DataGenerator.created_body_for_review()
+
     url_create_review = f"{BASE_URL}{MOVIES_ENDPOINT}/:{movie_id}{REVIEW_ENDPOINT}"
 
-    response = requests.post(url_create_review, json=created_body_from_review, headers=auth_admin_headers)
+    response = requests.post(url_create_review, json=body, headers=auth_admin_headers)
 
     # Проверки
     assert response.status_code == 200, "Ошибка создания отзыва"
+    return movie_id
 
 # Cоздаём сессию
 @pytest.fixture(scope="session")

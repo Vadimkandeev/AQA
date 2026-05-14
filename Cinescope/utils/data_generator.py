@@ -57,7 +57,7 @@ class DataGenerator:
 
     # Создаем тело запроса отзыва
     @staticmethod
-    def created_body_from_review():
+    def created_body_for_review():
         body = {
 
             "rating": randint(1, 10),
