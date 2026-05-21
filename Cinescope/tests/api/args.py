@@ -52,22 +52,87 @@ def log_kwargs(func):
 # print(my_function(5, 10))
 
 
-def my_decor(func):
-    def wrapper(*args, **kwargs):
-        print("START")
-        result = func(*args, **kwargs)
-        print(result)
-        print("FINISH")
-        return result
+# def my_decor(func):
+#     def wrapper(*args, **kwargs):
+#         #print("START")
+#         result = func(*args, **kwargs)
+#         #print(result)
+#         #print("FINISH")
+#         return f"START\n{result}\nFINISH"
+#
+#     return wrapper
+#
+# @my_decor
+# def my_func(a, b, c):
+#     return a+b+c
 
+#print (my_func(2,6,999))
+
+
+# def my_decor(func):
+#     def wrapper(*args, **kwargs):
+#         func(*args, **kwargs)
+#         return args
+#     return wrapper
+#
+# @my_decor
+# def my_function(*args, **kwargs):
+#     return kwargs, args
+#
+#
+# print(my_function(10, 50, "8555", name="Ivan", age=30))
+
+
+# def my_decor(func):
+#     def wrapper(x):
+#         #func(x)
+#         return func(x).upper()
+#     return wrapper
+#
+# @my_decor
+# def print_srting(x):
+#     return x.lower()
+#
+# print(print_srting("dddddddddddddDDDDDDDDDDDDDlllllllllllllll"))
+
+
+# def my_decor(func):
+#     def wrapper(*args):
+#         my_list = list(func(*args))
+#         return my_list
+#     return wrapper
+#
+# @my_decor
+# def my_tuple(*args):
+#     return args
+#
+# print(my_tuple(1, 10, 45, "55", "dfdf"))
+
+
+def my_decor(func):
+    def wrapper(*args):
+        my_tuple = func(*args)
+        return max(my_tuple)
     return wrapper
 
+
 @my_decor
-def my_func(a, b, c):
-    return a+b+c
+def my_tuple(*args):
+    return args
+
+print(my_tuple(10,2,5,122,522,612,1451,21,266,2112,94444,52))
 
 
-my_func(2,6,999)
+
+def my_decor(func):
+    def wrapper(*args):
+        my_tuple = func(*args)
+        return " ".join(my_tuple)
+    return wrapper
 
 
+@my_decor
+def my_tuple(*args):
+    return args
 
+print(my_tuple("1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","d"))
