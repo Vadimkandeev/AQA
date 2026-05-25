@@ -1,3 +1,6 @@
+import os
+
+
 # def greet(**kwargs):
 #     print(f"Hello, {kwargs["name"]}! You are {kwargs["age"]} years old.")
 #     print(kwargs)
@@ -26,11 +29,11 @@
 
 #default_settings = {"theme": "light", "notifications": True}
 
-def log_kwargs(func):
-    def wrapper(a, b, **kwargs):
-        res = func(a, b, **kwargs)
-        return res
-    return wrapper
+# def log_kwargs(func):
+#     def wrapper(a, b, **kwargs):
+#         res = func(a, b, **kwargs)
+#         return res
+#     return wrapper
 
 # @log_kwargs
 # def my_function(a, b, **kwargs):
@@ -109,30 +112,33 @@ def log_kwargs(func):
 # print(my_tuple(1, 10, 45, "55", "dfdf"))
 
 
-def my_decor(func):
-    def wrapper(*args):
-        my_tuple = func(*args)
-        return max(my_tuple)
-    return wrapper
+# def my_decor(func):
+#     def wrapper(*args):
+#         my_tuple = func(*args)
+#         return max(my_tuple)
+#     return wrapper
+#
+#
+# @my_decor
+# def my_tuple(*args):
+#     return args
+#
+# print(my_tuple(10,2,5,122,522,612,1451,21,266,2112,94444,52))
+#
+#
+#
+# def my_decor(func):
+#     def wrapper(*args):
+#         my_tuple = func(*args)
+#         return " ".join(my_tuple)
+#     return wrapper
+#
+#
+# @my_decor
+# def my_tuple(*args):
+#     return args
+#
+# print(my_tuple("1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","d"))
 
-
-@my_decor
-def my_tuple(*args):
-    return args
-
-print(my_tuple(10,2,5,122,522,612,1451,21,266,2112,94444,52))
-
-
-
-def my_decor(func):
-    def wrapper(*args):
-        my_tuple = func(*args)
-        return " ".join(my_tuple)
-    return wrapper
-
-
-@my_decor
-def my_tuple(*args):
-    return args
-
-print(my_tuple("1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","d"))
+x = os.environ
+print(x)
