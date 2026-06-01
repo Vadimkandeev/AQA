@@ -140,5 +140,5 @@ import os
 #
 # print(my_tuple("1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","d"))
 
-x = os.environ
-print(x)
+# x = os.environ
+# print(x)

@@ -1,7 +1,7 @@
 import pytest
 import requests
 from constants import BASE_URL, HEADERS,  CONFIRM_ENDPOINT
-
+from custom_requester.custom_requester import CustomRequester
 
 # Подтверждение email
 class TestConfirmEmail:
