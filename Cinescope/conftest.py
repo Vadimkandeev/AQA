@@ -220,10 +220,10 @@ def created_review(auth_admin_headers, created_movie):
 # Cоздаём сессию
 @pytest.fixture(scope="session")
 def session_factory():
-    def create_session(token):
+    def create_session(tokens):
         session = requests.Session()
         session.headers.update(HEADERS)
-        session.headers.update({"Test_Authorization": f"Bearer {token['accessToken']}"})
+        session.headers.update({"Test_Authorization": f"Bearer {tokens['accessToken']}"})
         return session
     return create_session
 
