@@ -1,5 +1,3 @@
-from requests import session
-
 import pytest
 import requests
 from constants import BASE_URL, HEADERS, LOGOUT_ENDPOINT

@@ -3,22 +3,22 @@ import requests
 
 from conftest import created_user_by_admin
 from constants import BASE_URL, USER_ENDPOINT
+from custom_requester.custom_requester import CustomRequester
 
 
 class TestGetInformUser:
-    def test_get_inform_user_email(self, created_user_by_admin, auth_user_headers):
+    def test_get_inform_user_email(self, created_user_by_admin, session_factory, admin_tokens):
         email = created_user_by_admin["email"]
         email = email.replace("@", "%")
 
         get_inform_url_email = f"{BASE_URL}{USER_ENDPOINT}/{email}"
 
-        response = requests.get(get_inform_url_email, headers=auth_user_headers)
-        # Логируем ответ для диагностики
-        print(f"Response status: {response.status_code}")
-        print(f"Response body: {response.text}")
+        admin_session = session_factory(admin_tokens)
 
-        # Проверка получения статус-кода. Ожидается 200
-        assert response.status_code == 200, "Ошибка запроса данных пользователя"
+        requester = CustomRequester(admin_session, BASE_URL)
+
+        response = requester.send_request("GET", get_inform_url_email, None, 200, True)
+
         response_data = response.json()
         assert response_data["email"] == created_user_by_admin["email"], "Email не совпадает"
         assert "id" in response_data, "ID пользователя отсутствует в ответе"
@@ -30,20 +30,17 @@ class TestGetInformUser:
 
 
 
+
     # Проводим невалидный запрос на изменение данных пользователя с токеном пользователя вместо админа.
     # Вызов статус-кода 403
-    def test_invalid_resp_user_data(self, created_user_by_admin, auth_user_headers):
+    def test_invalid_resp_user_data(self, created_user_by_admin, user_tokens, session_factory):
 
         user_id = created_user_by_admin["id"]
 
         url_from_get_user_data = f"{BASE_URL}{USER_ENDPOINT}/{user_id}"
 
-        response = requests.get(url_from_get_user_data, headers=auth_user_headers)
+        admin_session = session_factory(user_tokens)
 
-        # Логируем ответ для диагностики
-        print(f"Response status: {response.status_code}")
-        print(f"Response body: {response.text}")
+        requester = CustomRequester(admin_session, BASE_URL)
 
-        # Проверка получения статус-кода. Ожидается 403
-        assert response.status_code == 403, "Ошибка запроса на изменение данных пользователя при невалидном токене.\
-           Ожидается статус 403"
+        requester.send_request("GET", url_from_get_user_data, None, 403, True)
