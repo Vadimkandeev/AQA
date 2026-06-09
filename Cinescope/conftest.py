@@ -1,7 +1,7 @@
 import requests
 from constants import BASE_URL, HEADERS, REGISTER_ENDPOINT, LOGIN_ENDPOINT, ADMIN_DATA, USER_ENDPOINT, LOGOUT_ENDPOINT,\
     MOVIES_ENDPOINT, REVIEW_ENDPOINT
-import pytest
+import pytest_test
 from utils.data_generator import DataGenerator
 from random import randint
 

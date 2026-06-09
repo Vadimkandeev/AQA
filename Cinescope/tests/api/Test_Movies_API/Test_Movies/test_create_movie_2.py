@@ -1,4 +1,4 @@
-import pytest
+import pytest_test
 import requests
 from constants import BASE_URL, MOVIES_ENDPOINT
 from custom_requester.custom_requester import CustomRequester
