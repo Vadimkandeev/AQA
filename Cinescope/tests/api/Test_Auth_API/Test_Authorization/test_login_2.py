@@ -1,4 +1,4 @@
-import pytest_test
+import pytest
 import requests
 from constants import BASE_URL, HEADERS, LOGIN_ENDPOINT
 from custom_requester.custom_requester import CustomRequester
@@ -7,9 +7,8 @@ from custom_requester.custom_requester import CustomRequester
 class TestAuth:
      # Аутентификация пользователя. Валидный запрос.
     def test_authentication_user(self, random_user_by_user, session_factory, user_tokens):
-        # URL для аутентификации
         random_user = random_user_by_user
-        authentication_url = f"{BASE_URL}{LOGIN_ENDPOINT}"
+
         body = {"email": random_user["email"], "password": random_user["password"]}
 
         user_session = session_factory(user_tokens)
@@ -18,7 +17,7 @@ class TestAuth:
 
         # Отправка запроса для аутентификации
 
-        response = requester.send_request("POST", authentication_url, body, 200, True)
+        response = requester.send_request("POST", LOGIN_ENDPOINT, body, 200, True)
 
         # Проверки
         assert response.status_code == 200, "Ошибка аутентификации пользователя"
@@ -35,8 +34,7 @@ class TestAuth:
 
     # Аутентификация пользователя. Невалидный email.
     def test_negative_authentication_user_invalid_email(self, random_user_by_user, session_factory, user_tokens):
-        # URL для аутентификации
-        authentication_url = f"{BASE_URL}{LOGIN_ENDPOINT}"
+
 
         invalid_email = "invalid_email@mail.ru"
         body = {"email": invalid_email, "password": random_user_by_user["password"]}
@@ -46,14 +44,12 @@ class TestAuth:
         requester = CustomRequester(user_session, BASE_URL)
 
         # Отправка запроса для аутентификации
-        requester.send_request("POST", authentication_url, body, 401, True)
+        requester.send_request("POST", LOGIN_ENDPOINT, body, 401, True)
 
 
 
     # Аутентификация пользователя. Невалидный password.
     def test_negative_authentication_user_invalid_pass(self, random_user_by_user, session_factory, user_tokens):
-        # URL для аутентификации
-        authentication_url = f"{BASE_URL}{LOGIN_ENDPOINT}"
 
         invalid_password = "invalid_password"
         body = {"email": random_user_by_user["email"], "password": invalid_password}
@@ -64,14 +60,14 @@ class TestAuth:
         requester = CustomRequester(user_session, BASE_URL)
 
         # Отправка запроса для аутентификации
-        requester.send_request("POST", authentication_url, body, 401, True)
+        requester.send_request("POST", LOGIN_ENDPOINT, body, 401, True)
 
 
 
         # Аутентификация пользователя. Пустое тело запроса.
     def test_negative_authentication_user_empty_body(self, random_user_by_user, session_factory, user_tokens):
         # URL для аутентификации
-        authentication_url = f"{BASE_URL}{LOGIN_ENDPOINT}"
+        authentication_url = f"{LOGIN_ENDPOINT}"
 
         body = {}
 

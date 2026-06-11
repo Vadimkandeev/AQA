@@ -1,4 +1,4 @@
-import pytest_test
+import pytest
 import requests
 from constants import BASE_URL, HEADERS,  CONFIRM_ENDPOINT
 from custom_requester.custom_requester import CustomRequester
@@ -9,7 +9,7 @@ class TestConfirmEmail:
 
         # URL для подтверждения email
         token = user_tokens["accessToken"]
-        confirm_url = f"{BASE_URL}{CONFIRM_ENDPOINT}/{token}"
+        confirm_url = f"{CONFIRM_ENDPOINT}?token={token}"
 
         user_session = session_factory(user_tokens)
 
