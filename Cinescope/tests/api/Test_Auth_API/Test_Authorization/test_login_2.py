@@ -6,14 +6,14 @@ from custom_requester.custom_requester import CustomRequester
 # Аутентификация пользователя.
 class TestAuth:
      # Аутентификация пользователя. Валидный запрос.
-    def test_authentication_user(self, random_user_by_user, session_factory, user_tokens):
+    def test_authentication_user(self, random_user_by_user, created_user_by_user, unauth_session):
+
         random_user = random_user_by_user
 
         body = {"email": random_user["email"], "password": random_user["password"]}
 
-        user_session = session_factory(user_tokens)
 
-        requester = CustomRequester(user_session, BASE_URL)
+        requester = CustomRequester(unauth_session, BASE_URL)
 
         # Отправка запроса для аутентификации
 
@@ -33,15 +33,15 @@ class TestAuth:
 
 
     # Аутентификация пользователя. Невалидный email.
-    def test_negative_authentication_user_invalid_email(self, random_user_by_user, session_factory, user_tokens):
+    def test_negative_authentication_user_invalid_email(self, random_user_by_user,created_user_by_user,  unauth_session):
 
 
         invalid_email = "invalid_email@mail.ru"
         body = {"email": invalid_email, "password": random_user_by_user["password"]}
 
-        user_session = session_factory(user_tokens)
 
-        requester = CustomRequester(user_session, BASE_URL)
+
+        requester = CustomRequester(unauth_session, BASE_URL)
 
         # Отправка запроса для аутентификации
         requester.send_request("POST", LOGIN_ENDPOINT, body, 401, True)
@@ -49,15 +49,14 @@ class TestAuth:
 
 
     # Аутентификация пользователя. Невалидный password.
-    def test_negative_authentication_user_invalid_pass(self, random_user_by_user, session_factory, user_tokens):
+    def test_negative_authentication_user_invalid_pass(self, random_user_by_user,created_user_by_user,  unauth_session):
 
         invalid_password = "invalid_password"
         body = {"email": random_user_by_user["email"], "password": invalid_password}
 
         # Отправка запроса для аутентификации
-        user_session = session_factory(user_tokens)
 
-        requester = CustomRequester(user_session, BASE_URL)
+        requester = CustomRequester(unauth_session, BASE_URL)
 
         # Отправка запроса для аутентификации
         requester.send_request("POST", LOGIN_ENDPOINT, body, 401, True)
@@ -65,16 +64,15 @@ class TestAuth:
 
 
         # Аутентификация пользователя. Пустое тело запроса.
-    def test_negative_authentication_user_empty_body(self, random_user_by_user, session_factory, user_tokens):
+    def test_negative_authentication_user_empty_body(self, random_user_by_user,created_user_by_user,  unauth_session):
         # URL для аутентификации
         authentication_url = f"{LOGIN_ENDPOINT}"
 
         body = {}
 
         # Отправка запроса для аутентификации
-        user_session = session_factory(user_tokens)
 
-        requester = CustomRequester(user_session, BASE_URL)
+        requester = CustomRequester(unauth_session, BASE_URL)
 
         # Отправка запроса для аутентификации
         requester.send_request("POST", authentication_url, body, 401, True)

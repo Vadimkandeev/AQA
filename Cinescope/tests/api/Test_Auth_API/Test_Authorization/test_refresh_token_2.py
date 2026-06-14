@@ -8,14 +8,16 @@ from custom_requester.custom_requester import CustomRequester
 
 # Обновление токена
 class TestRefreshToken:
-    def test_refresh_token(self, session_factory, user_tokens ):
+    def test_refresh_token(self,created_user_by_user, session_factory, user_tokens, user_refresh_cookies):
 
 
         user_session = session_factory(user_tokens)
 
+        user_session.cookies.update(user_refresh_cookies)
+
         requester = CustomRequester(user_session, BASE_URL)
 
-        response =  requester.send_request("GET", REFRESH_TOKENS_ENDPOINT, None, 200, True)
+        response =  requester.send_request("GET", '/refresh-tokens', None, 200, True)
 
         # Проверки
         response_data = response.json()
@@ -36,4 +38,4 @@ class TestRefreshToken:
         print(f"Response body: {response.text}")
 
         # Проверки
-        assert response.status_code == 403, "Ошибка обновления токена"
+        assert response.status_code == 401, "Ошибка обновления токена"

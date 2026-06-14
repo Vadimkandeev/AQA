@@ -6,13 +6,11 @@ from custom_requester.custom_requester import CustomRequester
 
 # Регистрация нового пользователя позитивная проверка
 class TestRegistration:
-    def test_register_user(self, random_user_by_user, session_factory, user_tokens):
+    def test_register_user(self, random_user_by_user, unauth_session):
         # URL для регистрации
-        register_url = f"{BASE_URL}{REGISTER_ENDPOINT}"
+        register_url = f"{REGISTER_ENDPOINT}"
 
-        user_session = session_factory(user_tokens)
-
-        requester = CustomRequester(user_session, BASE_URL)
+        requester = CustomRequester(unauth_session, BASE_URL)
 
         # Отправка запроса на регистрацию
         response = requester.send_request("POST", register_url, random_user_by_user, 201, True)
@@ -31,7 +29,7 @@ class TestRegistration:
     # Регистрация нового пользователя без поля подтверждения пароля
     def test_negative_register_without_confirm_pass(self, random_user_by_user, session_factory, user_tokens):
         # URL для регистрации
-        register_url = f"{BASE_URL}{REGISTER_ENDPOINT}"
+        register_url = f"{REGISTER_ENDPOINT}"
 
         # Фабрикуем невалидное тело запроса (удаляем поле подтверждение пароля)
         body = random_user_by_user.copy()
@@ -43,7 +41,7 @@ class TestRegistration:
         requester = CustomRequester(user_session, BASE_URL)
 
         # Отправка запроса на регистрацию
-        requester.send_request("POST", register_url, random_user_by_user, 400, True)
+        requester.send_request("POST", register_url, body, 400, True)
 
 
 
@@ -51,7 +49,7 @@ class TestRegistration:
     # Регистрация нового пользователя без поля ФИО
     def test_negative_register_without_fullname(self, random_user_by_user, session_factory, user_tokens):
         # URL для регистрации
-        register_url = f"{BASE_URL}{REGISTER_ENDPOINT}"
+        register_url = f"{REGISTER_ENDPOINT}"
 
         # Фабрикуем невалидное тело запроса (удаляем поле ФИО)
         body = random_user_by_user.copy()
@@ -62,13 +60,13 @@ class TestRegistration:
         requester = CustomRequester(user_session, BASE_URL)
 
         # Отправка запроса на регистрацию
-        requester.send_request("POST", register_url, random_user_by_user, 400, True)
+        requester.send_request("POST", register_url, body, 400, True)
 
 
     # Регистрация нового пользователя без поля email
     def test_negative_register_without_email(self, random_user_by_user, session_factory, user_tokens):
         # URL для регистрации
-        register_url = f"{BASE_URL}{REGISTER_ENDPOINT}"
+        register_url = f"{REGISTER_ENDPOINT}"
 
         # Фабрикуем невалидное тело запроса (удаляем поле email)
         body = random_user_by_user.copy()
@@ -79,7 +77,7 @@ class TestRegistration:
         requester = CustomRequester(user_session, BASE_URL)
 
         # Отправка запроса на регистрацию
-        requester.send_request("POST", register_url, random_user_by_user, 400, True)
+        requester.send_request("POST", register_url, body, 400, True)
 
 
 
@@ -87,7 +85,7 @@ class TestRegistration:
     # Регистрация нового пользователя с несовпадающими паролями
     def test_negative_register_password_mismatch(self, random_user_by_user, session_factory, user_tokens):
         # URL для регистрации
-        register_url = f"{BASE_URL}{REGISTER_ENDPOINT}"
+        register_url = f"{REGISTER_ENDPOINT}"
 
         # Фабрикуем невалидное тело запроса (изменяем повторный пароль)
         body = random_user_by_user.copy()
@@ -98,14 +96,14 @@ class TestRegistration:
         requester = CustomRequester(user_session, BASE_URL)
 
         # Отправка запроса на регистрацию
-        requester.send_request("POST", register_url, random_user_by_user, 400, True)
+        requester.send_request("POST", register_url, body, 400, True)
 
 
 
         # Регистрация нового пользователя с невалидным email
     def test_negative_register_invalid_email(self, random_user_by_user, session_factory, user_tokens):
         # URL для регистрации
-        register_url = f"{BASE_URL}{REGISTER_ENDPOINT}"
+        register_url = f"{REGISTER_ENDPOINT}"
 
         # Фабрикуем невалидное тело запроса (делаем невалидный email)
         body = random_user_by_user.copy()
@@ -116,14 +114,14 @@ class TestRegistration:
         requester = CustomRequester(user_session, BASE_URL)
 
         # Отправка запроса на регистрацию
-        requester.send_request("POST", register_url, random_user_by_user, 400, True)
+        requester.send_request("POST", register_url, body, 400, True)
 
 
 
         # Регистрация нового пользователя со слишком коротким паролем
     def test_negative_register_short_email(self, random_user_by_user, session_factory, user_tokens):
         # URL для регистрации
-        register_url = f"{BASE_URL}{REGISTER_ENDPOINT}"
+        register_url = f"{REGISTER_ENDPOINT}"
 
         # Фабрикуем невалидное тело запроса (создаем короткий пароль)
         body = random_user_by_user.copy()
@@ -135,4 +133,4 @@ class TestRegistration:
         requester = CustomRequester(user_session, BASE_URL)
 
         # Отправка запроса на регистрацию
-        requester.send_request("POST", register_url, random_user_by_user, 400, True)
+        requester.send_request("POST", register_url, body, 400, True)

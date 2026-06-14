@@ -99,7 +99,7 @@ def admin_tokens():
 def auth_admin_headers(admin_tokens):
     return {
         **HEADERS,
-        "Test_Authorization": f"Bearer {admin_tokens['accessToken']}"
+        "Authorization": f"Bearer {admin_tokens['accessToken']}"
     }
 
 
@@ -109,12 +109,12 @@ def auth_admin_headers(admin_tokens):
 def auth_user_headers(user_tokens):
     return {
         **HEADERS,
-        "Test_Authorization": f"Bearer {user_tokens['accessToken']}"
+        "Authorization": f"Bearer {user_tokens['accessToken']}"
     }
 
 def build_refresh_cookies(tokens):
     return {
-        "refreshToken": tokens["refreshToken"]
+        "refresh_token": tokens["refreshToken"]
     }
 
 # Получаем куки для АДМИНА
@@ -209,7 +209,7 @@ def created_review(auth_admin_headers, created_movie):
 
     body = DataGenerator.created_body_for_review()
 
-    url_create_review = f"{BASE_URL}{MOVIES_ENDPOINT}/:{movie_id}{REVIEW_ENDPOINT}"
+    url_create_review = f"{BASE_URL}{MOVIES_ENDPOINT}/{movie_id}{REVIEW_ENDPOINT}"
 
     response = requests.post(url_create_review, json=body, headers=auth_admin_headers)
 
@@ -223,9 +223,16 @@ def session_factory():
     def create_session(tokens):
         session = requests.Session()
         session.headers.update(HEADERS)
-        session.headers.update({"Test_Authorization": f"Bearer {tokens['accessToken']}"})
+        session.headers.update({"Authorization": f"Bearer {tokens['accessToken']}"})
         return session
     return create_session
 
+
+# Сессия без авторизации. Для публичных АПИ
+@pytest.fixture(scope="session")
+def unauth_session():
+    session = requests.Session()
+    session.headers.update(HEADERS)
+    return session
 
 

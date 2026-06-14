@@ -2,7 +2,7 @@ import pytest_test
 import requests
 
 from conftest import created_user_by_admin
-from constants import BASE_URL,  USER_ENDPOINT, BODY_FROM_CHANGE_USER_DATA, INVALID_REFRESH_TOKEN
+from constants import BASE_URL,  USER_ENDPOINT, BODY_FROM_CHANGE_USER_DATA, HEADERS
 from custom_requester.custom_requester import CustomRequester
 
 
@@ -35,14 +35,14 @@ class TestChangeUser:
 
         user_id = f"{created_user_by_admin["id"]}0"
 
-        url_for_change_users_data = f"{BASE_URL}{USER_ENDPOINT}/{user_id}"
+        url_for_change_users_data = f"{USER_ENDPOINT}/{user_id}"
 
         admin_session = session_factory(admin_tokens)
 
         requester = CustomRequester(admin_session, BASE_URL)
 
         # def send_request(self, method, endpoint, data=None, expected_status=200, need_logging=True):
-        requester.send_request("POST", url_for_change_users_data, BODY_FROM_CHANGE_USER_DATA,  400, True)
+        requester.send_request("PATCH", url_for_change_users_data, BODY_FROM_CHANGE_USER_DATA,  400, True)
 
 
 
@@ -57,13 +57,14 @@ class TestChangeUser:
 
         url_for_change_users_data = f"{USER_ENDPOINT}/{user_id}"
 
-        admin_session = session_factory(user_tokens)
+        session = requests.Session()
+        session.headers.update(HEADERS)
+        session.headers.update({"Authorization": f"Bearer {user_tokens['accessToken']}"})
 
-        requester = CustomRequester(admin_session, BASE_URL)
+        requester = CustomRequester(session, BASE_URL)
 
         # def send_request(self, method, endpoint, data=None, expected_status=200, need_logging=True):
-        requester.send_request("PATCH", url_for_change_users_data, 403, True)
+        requester.send_request("PATCH", url_for_change_users_data, BODY_FROM_CHANGE_USER_DATA, 403, True)
 
 
 
-    # 404 Получить не удается
