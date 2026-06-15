@@ -9,9 +9,8 @@ from custom_requester.custom_requester import CustomRequester
 class TestGetInformUser:
     def test_get_inform_user_email(self, created_user_by_admin, session_factory, admin_tokens):
         email = created_user_by_admin["email"]
-        email = email.replace("@", "%")
 
-        get_inform_url_email = f"{BASE_URL}{USER_ENDPOINT}/{email}"
+        get_inform_url_email = f"{USER_ENDPOINT}/{email}"
 
         admin_session = session_factory(admin_tokens)
 
@@ -37,7 +36,7 @@ class TestGetInformUser:
 
         user_id = created_user_by_admin["id"]
 
-        url_from_get_user_data = f"{BASE_URL}{USER_ENDPOINT}/{user_id}"
+        url_from_get_user_data = f"{USER_ENDPOINT}/{user_id}"
 
         admin_session = session_factory(user_tokens)
 

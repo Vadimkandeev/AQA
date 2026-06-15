@@ -10,13 +10,13 @@ class TestDelUser:
 
         user_id = created_user_by_admin["id"]
 
-        delete_user_url = f"{BASE_URL}{USER_ENDPOINT}/{user_id}"
+        delete_user_url = f"{USER_ENDPOINT}/{user_id}"
 
         admin_session = session_factory(admin_tokens)
 
         requester = CustomRequester(admin_session, BASE_URL)
 
-        response = requester.send_request("DELETE", delete_user_url, None, 200, True)
+        requester.send_request("DELETE", delete_user_url, None, 200, True)
 
 
 
@@ -26,13 +26,14 @@ class TestDelUser:
     def test_del_user_not_found(self, random_user_by_admin, auth_admin_headers, created_user_by_admin, session_factory, admin_tokens):
         user_id = created_user_by_admin["id"]
 
-        delete_user_url = f"{BASE_URL}{USER_ENDPOINT}/{user_id}"
+        delete_user_url = f"{USER_ENDPOINT}/{user_id}"
 
         admin_session = session_factory(admin_tokens)
 
         requester = CustomRequester(admin_session, BASE_URL)
 
-        requests.delete(delete_user_url, headers=auth_admin_headers)
+
+        requester.send_request("DELETE", delete_user_url, None, 200, False)
         requester.send_request("DELETE", delete_user_url, None, 404, True)
 
 
@@ -41,7 +42,7 @@ class TestDelUser:
     def test_del_user_by_illegal_token(self, random_user_by_admin, auth_user_headers, created_user_by_admin, session_factory, user_tokens):
         user_id = created_user_by_admin["id"]
 
-        delete_user_url = f"{BASE_URL}{USER_ENDPOINT}/{user_id}"
+        delete_user_url = f"{USER_ENDPOINT}/{user_id}"
 
         admin_session = session_factory(user_tokens)
 

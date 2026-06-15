@@ -1,6 +1,6 @@
 import requests
 from constants import BASE_URL, HEADERS, REGISTER_ENDPOINT, LOGIN_ENDPOINT, ADMIN_DATA, USER_ENDPOINT, LOGOUT_ENDPOINT,\
-    MOVIES_ENDPOINT, REVIEW_ENDPOINT
+    MOVIES_ENDPOINT, REVIEW_ENDPOINT, BASE_API_URL
 import pytest
 from utils.data_generator import DataGenerator
 from random import randint
@@ -14,7 +14,7 @@ def random_user_by_user():
     random_name = DataGenerator.generate_random_name()
     random_password = DataGenerator.generate_random_password()
 
-    print(f"GENERATED EMAIL = {random_email}")
+
 
     return {
         "email": random_email,
@@ -25,27 +25,34 @@ def random_user_by_user():
     }
 
 @pytest.fixture(scope = "function")
-def random_user_by_admin(random_user_by_user):
-    """
-    Делаем копию словаря и модифицируем его для запросов раздела "Пользователь"
-    """
-    new_body = random_user_by_user.copy()
-    del new_body["passwordRepeat"]
-    del new_body["roles"]
-    new_body["verified"] = True
-    new_body["banned"] = False
-    return new_body
+def random_user_by_admin():
+
+    random_email = DataGenerator.generate_random_email()
+    random_name = DataGenerator.generate_random_name()
+    random_password = DataGenerator.generate_random_password()
+
+    return {
+        "email": random_email,
+        "fullName": random_name,
+        "password": random_password,
+        "verified" : True,
+        "banned" : False
+    }
+
 
 # Создаем нового пользователя от имени пользователя
 @pytest.fixture(scope = "function")
 def created_user_by_user(random_user_by_user):
     register_url = f"{BASE_URL}{REGISTER_ENDPOINT}"
     response = requests.post(register_url, json=random_user_by_user, headers=HEADERS)
-    print("REGISTER:", random_user_by_user["email"])
+
     body = response.json()
     print(body)
     assert response.status_code == 201, "Ошибка регистрации пользователя"
     assert body['fullName'] == random_user_by_user['fullName']
+
+    print("USER CREATE:", random_user_by_user["email"])
+
     return body
 
 
@@ -58,6 +65,9 @@ def created_user_by_admin(random_user_by_admin, auth_admin_headers):
     print(body)
     assert response.status_code == 201, "Ошибка регистрации пользователя"
     assert body['fullName'] == random_user_by_admin['fullName']
+
+    print("ADMIN CREATE:", random_user_by_admin["email"])
+
     return body
 
 
@@ -69,7 +79,7 @@ def user_tokens(random_user_by_user, created_user_by_user):
         "email": random_user_by_user["email"],
         "password": random_user_by_user["password"]
     }
-    print("LOGIN:", random_user_by_user["email"])
+
     response = requests.post(login_url, json=login_data, headers=HEADERS)
 
     # Получаем токен
@@ -142,26 +152,26 @@ def logout_user(user_tokens):
 
 
 # Создаем тело запроса для создания киноафиши
-@pytest.fixture(scope = "session")
+@pytest.fixture(scope = "function")
 def created_random_movie():
     movie_name = DataGenerator.generate_random_movie_name()
     movie_description = DataGenerator.generate_random_movie_description()
     body = {
       "name": movie_name,
-      "imageUrl": "https://image.url",
-      "price": 100,
+      "imageUrl": "https://example.com/image.png",
+      "price": 12,
       "description": movie_description,
       "location": "SPB",
       "published": True,
-      "genreId": 1
+      "genreId": 2
     }
     return body
 
 
 #Создание афиши
-@pytest.fixture(scope = "session")
+@pytest.fixture(scope = "function")
 def created_movie(created_random_movie, auth_admin_headers):
-    create_movie_url = f"{BASE_URL}{MOVIES_ENDPOINT}"
+    create_movie_url = f"{BASE_API_URL}{MOVIES_ENDPOINT}"
 
     body = created_random_movie
 
@@ -239,4 +249,10 @@ def unauth_session():
     session.headers.update(HEADERS)
     return session
 
-
+# Временный тест для проверки
+def test_email_generation():
+    email1 = DataGenerator.generate_random_email()
+    email2 = DataGenerator.generate_random_email()
+    print(f"Email 1: {email1}")
+    print(f"Email 2: {email2}")
+    assert email1 != email2, "Email совпадают!"
