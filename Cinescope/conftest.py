@@ -14,6 +14,8 @@ def random_user_by_user():
     random_name = DataGenerator.generate_random_name()
     random_password = DataGenerator.generate_random_password()
 
+    print(f"GENERATED EMAIL = {random_email}")
+
     return {
         "email": random_email,
         "fullName": random_name,
@@ -39,6 +41,7 @@ def random_user_by_admin(random_user_by_user):
 def created_user_by_user(random_user_by_user):
     register_url = f"{BASE_URL}{REGISTER_ENDPOINT}"
     response = requests.post(register_url, json=random_user_by_user, headers=HEADERS)
+    print("REGISTER:", random_user_by_user["email"])
     body = response.json()
     print(body)
     assert response.status_code == 201, "Ошибка регистрации пользователя"
@@ -66,6 +69,7 @@ def user_tokens(random_user_by_user, created_user_by_user):
         "email": random_user_by_user["email"],
         "password": random_user_by_user["password"]
     }
+    print("LOGIN:", random_user_by_user["email"])
     response = requests.post(login_url, json=login_data, headers=HEADERS)
 
     # Получаем токен

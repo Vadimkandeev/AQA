@@ -45,10 +45,6 @@ class TestChangeUser:
         requester.send_request("PATCH", url_for_change_users_data, BODY_FROM_CHANGE_USER_DATA,  400, True)
 
 
-
-
-
-
     # Проводим невалидный запрос на изменение данных пользователя с токеном пользователя вместо админа.
     # Вызов статус-кода 403
     def test_invalid_change_user_data_by_unlegal_token(self, created_user_by_admin, session_factory, user_tokens):

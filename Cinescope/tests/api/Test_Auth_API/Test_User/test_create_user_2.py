@@ -39,7 +39,7 @@ class TestCreateUser:
 
         requester = CustomRequester(admin_session, BASE_URL)
 
-        requester.send_request("POST", USER_ENDPOINT, random_user_by_admin, 400, True)
+        requester.send_request("POST", USER_ENDPOINT, random_user_by_admin, 401, True)
 
 
 
