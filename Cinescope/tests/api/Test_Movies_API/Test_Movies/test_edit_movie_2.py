@@ -11,11 +11,14 @@ class TestEditMovie:
 
 
 
-        body_for_request = created_movie
+        #body_for_request = created_movie
+        body_for_request = {}
         random_body = created_random_movie
         movie_id = created_movie["id"]
         body_for_request["name"] = random_body["name"]
         body_for_request["description"] = random_body["description"]
+
+
         edit_movie_url = f"{MOVIES_ENDPOINT}/{movie_id}"
 
         admin_session = session_factory(admin_tokens)
@@ -36,12 +39,15 @@ class TestEditMovie:
     # Проводим невалидный запрос на создание афиши с токеном пользователя вместо админа.
     # Вызов статус-кода 403
     def test_negative_edit_movie_by_unlegal_token(self, created_random_movie, created_movie, session_factory, user_tokens):
-        edit_movie_url = f"{MOVIES_ENDPOINT}"
 
-        body_for_request = created_movie
+
+        body_for_request = {}
         random_body = created_random_movie
         body_for_request["name"] = random_body["name"]
         body_for_request["description"] = random_body["description"]
+        movie_id = created_movie["id"]
+        edit_movie_url = f"{MOVIES_ENDPOINT}/{movie_id}"
+
 
         admin_session = session_factory(user_tokens)
 
