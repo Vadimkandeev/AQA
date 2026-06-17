@@ -16,3 +16,5 @@ INVALID_AUTH_DATA = {
     "username": "admin",
     "password": "password888"
 }
+
+ENDPOINT = "/auth"

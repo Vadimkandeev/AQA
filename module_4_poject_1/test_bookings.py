@@ -1,7 +1,18 @@
-from constans import BASE_URL
+from constans import BASE_URL, ENDPOINT
+from custom_requester import CustomRequester
 
 
 def test_create_booking(auth_session, booking_data, patch_booking_data, put_booking_data):
+
+    #*************************************************************************
+    admin_session = session_factory(admin_tokens)
+
+    requester = CustomRequester(admin_session, BASE_API_URL)
+
+    response = requester.send_request("GET", get_movie_url, None, 200, True)
+    #*************************************************************************
+
+
     response = auth_session.post(f"{BASE_URL}/booking", json=booking_data)
     assert  response.status_code == 200
 
