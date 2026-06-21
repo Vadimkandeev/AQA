@@ -249,10 +249,3 @@ def unauth_session():
     session.headers.update(HEADERS)
     return session
 
-# Временный тест для проверки
-def test_email_generation():
-    email1 = DataGenerator.generate_random_email()
-    email2 = DataGenerator.generate_random_email()
-    print(f"Email 1: {email1}")
-    print(f"Email 2: {email2}")
-    assert email1 != email2, "Email совпадают!"
