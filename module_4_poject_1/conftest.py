@@ -80,7 +80,7 @@ def patch_booking_data():
 @pytest.fixture
 def invalid_type_booking_data():
     return {
-        "totalprice": "150000"
+        "totalprice": "////////////////"
     }
 
 @pytest.fixture
