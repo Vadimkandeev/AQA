@@ -17,4 +17,4 @@ INVALID_AUTH_DATA = {
     "password": "password888"
 }
 
-ENDPOINT = "/auth"
+ENDPOINT = "/booking"

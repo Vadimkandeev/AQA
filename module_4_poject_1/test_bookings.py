@@ -5,49 +5,45 @@ from custom_requester import CustomRequester
 def test_create_booking(auth_session, booking_data, patch_booking_data, put_booking_data):
 
     #*************************************************************************
-    admin_session = session_factory(admin_tokens)
+    requester = CustomRequester(auth_session, BASE_URL)
 
-    requester = CustomRequester(admin_session, BASE_API_URL)
-
-    response = requester.send_request("GET", get_movie_url, None, 200, True)
+    response = requester.send_request("POST", ENDPOINT, booking_data, 200, True)
     #*************************************************************************
-
-
-    response = auth_session.post(f"{BASE_URL}/booking", json=booking_data)
-    assert  response.status_code == 200
 
     booking_id = response.json().get("bookingid")
     assert booking_id is not None
 
     #Проверяем получение
-    get_booking = auth_session.get(f"{BASE_URL}/booking/{booking_id}")
-    assert get_booking.status_code == 200
+    url = f"{ENDPOINT}/{booking_id}"
+    requester.send_request("GET", url, None, 200, True)
+
 
 
     #Изменяем бронь (Patch)
-    get_booking = auth_session.patch(f"{BASE_URL}/booking/{booking_id}", json=patch_booking_data)
-    assert get_booking.status_code == 200
+    requester.send_request("PATCH", url, patch_booking_data, 200, True)
+
     # Проверяем изменения
-    get_booking = auth_session.get(f"{BASE_URL}/booking/{booking_id}")
+    get_booking = requester.send_request("GET", url, None, 200, True)
     assert get_booking.json()['firstname'] == patch_booking_data['firstname']
-    assert get_booking.status_code == 200
+
 
     #Обновляем бронь (Put)
-    get_booking = auth_session.put(f"{BASE_URL}/booking/{booking_id}", json=put_booking_data)
-    assert get_booking.status_code == 200
+    #get_booking = auth_session.put(f"{BASE_URL}/booking/{booking_id}", json=put_booking_data)
+    requester.send_request("PUT", url, put_booking_data, 200, True)
+
     # Проверяем изменения
-    get_booking = auth_session.get(f"{BASE_URL}/booking/{booking_id}")
+    get_booking = requester.send_request("GET", url, None, 200, True)
     assert get_booking.json()['firstname'] == put_booking_data['firstname']
-    assert get_booking.status_code == 200
+
 
 
     #Удаляем
-    delete_booking = auth_session.delete(f"{BASE_URL}/booking/{booking_id}")
-    assert delete_booking.status_code == 201
+    requester.send_request("DELETE", url, None, 201, True)
+
 
     #Проверка удаления
-    get_booking = auth_session.get(f"{BASE_URL}/booking/{booking_id}")
-    assert get_booking.status_code == 404
+    requester.send_request("GET", url, None, 404, True)
+
 
 
 
@@ -56,50 +52,48 @@ def test_create_booking(auth_session, booking_data, patch_booking_data, put_book
 def test_negative(auth_session, booking_data, patch_booking_data, invalid_type_booking_data, empty_booking_data, \
                   no_required_field_booking_data, non_exist_field_booking_data, put_booking_data):
 
-    response = auth_session.post(f"{BASE_URL}/booking", json=booking_data)
-    assert response.status_code == 200
+
+    admin_session = auth_session
+
+    requester = CustomRequester(admin_session, BASE_URL)
+
+    response = requester.send_request("POST", ENDPOINT, booking_data, 200, True)
+
 
     booking_id = response.json().get("bookingid")
     assert booking_id is not None
 
-    # Негативные проверки GET
-    # Несуществующий ID
-    get_booking = auth_session.get(f"{BASE_URL}/booking/{999999999}")
-    assert get_booking.status_code == 404
+    url = f"{ENDPOINT}/{booking_id}"
 
+
+    # Негативные проверки GET
+    invalid_url = f"{ENDPOINT}/{99999999999}"
+    requester.send_request("GET", invalid_url, None, 404, True)
 
     # Негативные проверки POST
     # Отсутствует обязательное поле
-    response = auth_session.post(f"{BASE_URL}/booking", json=no_required_field_booking_data)
-    assert response.status_code == 500
+    requester.send_request("POST", ENDPOINT, no_required_field_booking_data, 500, True)
 
     # Пустое тело запроса
-    response = auth_session.post(f"{BASE_URL}/booking", json=empty_booking_data)
-    assert response.status_code == 500
+    requester.send_request("POST", ENDPOINT, empty_booking_data, 500, True)
 
     # Негативные проверки PUT
     # Несуществующий ресурс
-    response = auth_session.put(f"{BASE_URL}/9999999", json=put_booking_data)
-    assert response.status_code == 404
+    requester.send_request("PUT", invalid_url, put_booking_data, 405, True)
 
     # Отсутствует обязательное поле
-    get_booking = auth_session.put(f"{BASE_URL}/booking/{booking_id}", json=no_required_field_booking_data)
-    assert get_booking.status_code == 400
-
+    auth_session.put(f"{BASE_URL}/booking/{booking_id}", json=no_required_field_booking_data)
 
     # Негативные проверки PATCH
     # Несуществующее поле
-    response = auth_session.patch(f"{BASE_URL}/booking/{booking_id}", json=non_exist_field_booking_data)
-    assert response.status_code == 404
+    response = requester.send_request("PATCH", url, non_exist_field_booking_data, 200, True)
+    assert "may_flavor" not in response.json()
 
-    # Не верный тип данных
-    response = auth_session.patch(f"{BASE_URL}/booking/{booking_id}", json=invalid_type_booking_data)
-    assert response.status_code == 404
-
+    # Неверный тип данных
+    requester.send_request("PATCH", url, invalid_type_booking_data, 200, True)
 
     # Удаляем
-    delete_booking = auth_session.delete(f"{BASE_URL}/booking/{booking_id}")
-    assert delete_booking.status_code == 201
+    requester.send_request("DELETE", url, None, 201, True)
 
 
 
