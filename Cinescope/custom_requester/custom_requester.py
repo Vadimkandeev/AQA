@@ -21,7 +21,7 @@ class CustomRequester:
 
     def send_request(self, method, endpoint, data=None, expected_status=200, need_logging=True):
         url = f"{self.base_url}{endpoint}"
-        response = self.session.request(method, url, json=data)
+        response = self.session.request(method, url, json=data, headers=self.headers)
         if need_logging:
             self.log_request_and_response(response)
         if response.status_code != expected_status:
@@ -71,3 +71,17 @@ class CustomRequester:
             self.logger.info(f"{'=' * 80}\n")
         except Exception as e:
             self.logger.error(f"\nLogging failed: {type(e)} - {e}")
+
+
+
+    def _update_session(self, **kwargs):
+        """
+        Обновление заголовков  сессии.
+        :param session: Объект requests.Session, предоставленный API-классом.
+        :param kwargs: Дополнительные заголовки.
+        """
+        self.headers.update(kwargs) # Обновляем базовые заголовки
+        self.session.headers.update(self.headers)  # Обновляем заголовки в текущей сессии
+        
+
+

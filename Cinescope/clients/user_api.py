@@ -24,3 +24,15 @@ class UserApi(CustomRequester):
         )
 
     def delete_user(self, user_id, expected_status=204):
+        """
+        Удаление пользователя
+        :param user_id: АЙДИ пользователя
+        :param expected_status: Ожидаемый статус
+        :return:
+        """
+
+        return self.send_request(
+            method="DELETE",
+            endpoint=f"{USER_ENDPOINT}/{user_id}",
+            expected_status=expected_status
+        )
