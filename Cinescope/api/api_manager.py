@@ -8,7 +8,7 @@ class ApiManager:
     def __init__(self, session):
         """
         Инициализация ApiManager
-        :param session: HTTP -сессия, испольщуемая всеми API классами
+        :param session: HTTP -сессия, используемая всеми API классами
         """
         self.session = session
         self.auth_api = AuthApi(session)

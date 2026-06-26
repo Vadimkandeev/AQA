@@ -1,9 +1,13 @@
 def numbers():
-    print("Начало")
-    yield 5
-    print("Конец")
+    yield "Начало"
+    yield "Средина"
+    yield "Конец"
+    yield "Вторник"
+
 
 gen = numbers()
 
 print(next(gen))
+
+
 

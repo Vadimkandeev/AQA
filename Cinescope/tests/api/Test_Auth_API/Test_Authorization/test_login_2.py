@@ -2,6 +2,7 @@ import pytest
 import requests
 from constants import BASE_URL, HEADERS, LOGIN_ENDPOINT
 from custom_requester.custom_requester import CustomRequester
+from api.api_manager import ApiManager
 
 # Аутентификация пользователя.
 class TestAuth:

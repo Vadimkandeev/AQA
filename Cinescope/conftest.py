@@ -4,6 +4,7 @@ from constants import BASE_URL, HEADERS, REGISTER_ENDPOINT, LOGIN_ENDPOINT, ADMI
 import pytest
 from utils.data_generator import DataGenerator
 from random import randint
+from api.api_manager import ApiManager
 
 @pytest.fixture(scope="function")
 def random_user_by_user():
@@ -249,3 +250,19 @@ def unauth_session():
     session.headers.update(HEADERS)
     return session
 
+@pytest.fixture(scope="session")
+def session():
+    """
+    Фикстура для HTTP сессии.
+    """
+    http_session = requests.Session()
+    yield http_session
+    http_session.close()
+
+
+@pytest.fixture(scope="session")
+def api_manager(session):
+    """
+    Фикстура для создания экземпляра ApiManager
+    """
+    return ApiManager(session)
