@@ -76,8 +76,8 @@ class CustomRequester:
 
     def _update_session(self, **kwargs):
         """
-        Обновление заголовков  сессии.
-        :param session: Объект requests.Session, предоставленный API-классом.
+        Обновление заголовков сессии.
+        :param session: Объект requests. Session, предоставленный API-классом.
         :param kwargs: Дополнительные заголовки.
         """
         self.headers.update(kwargs) # Обновляем базовые заголовки
