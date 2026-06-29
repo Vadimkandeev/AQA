@@ -48,3 +48,4 @@ class AuthApi(CustomRequester):
 
         token = response["accessToken"]
         self._update_session_headers(**{"authorization": "Bearer" + token})
+

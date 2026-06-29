@@ -74,7 +74,7 @@ class CustomRequester:
 
 
 
-    def _update_session(self, **kwargs):
+    def _update_session_headers(self, **kwargs):
         """
         Обновление заголовков сессии.
         :param session: Объект requests. Session, предоставленный API-классом.

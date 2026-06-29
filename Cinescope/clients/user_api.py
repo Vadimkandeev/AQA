@@ -36,3 +36,5 @@ class UserApi(CustomRequester):
             endpoint=f"{USER_ENDPOINT}/{user_id}",
             expected_status=expected_status
         )
+
+    def edit_user_data(self, ):
