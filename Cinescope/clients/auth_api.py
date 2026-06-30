@@ -1,5 +1,5 @@
 from custom_requester.custom_requester import CustomRequester
-from constants import REGISTER_ENDPOINT, LOGIN_ENDPOINT
+from constants import REGISTER_ENDPOINT, LOGIN_ENDPOINT, LOGOUT_ENDPOINT,REFRESH_TOKENS_ENDPOINT, CONFIRM_ENDPOINT
 
 class AuthApi(CustomRequester):
     """
@@ -48,4 +48,41 @@ class AuthApi(CustomRequester):
 
         token = response["accessToken"]
         self._update_session_headers(**{"authorization": "Bearer" + token})
+
+
+    def logout(self, expected_status=200):
+        """
+        Разлогин пользователя
+        :param expected_status: Ожидаемый статус
+        """
+        return self.send_request(
+         method="GET",
+         endpoint=LOGOUT_ENDPOINT,
+         expected_status=expected_status
+        )
+
+
+    def refresh_token(self, expected_status=200):
+        """
+        Обновление refreshToken и accessToken пользователя
+        :param expected_status: Ожидаемый статус
+        """
+        return self.send_request(
+            method="GET",
+            endpoint=REFRESH_TOKENS_ENDPOINT,
+            expected_status=expected_status
+        )
+
+
+
+    def confirm_email(self, token, expected_status=200):
+        """
+        Подтверждение имейл
+        """
+        return self.send_request(
+            method="GET",
+            endpoint=f"{CONFIRM_ENDPOINT}?token={token}",
+            expected_status=expected_status
+        )
+
 
