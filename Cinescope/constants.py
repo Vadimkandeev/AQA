@@ -30,5 +30,6 @@ REFRESH_TOKENS_ENDPOINT = "/refresh-tokens"
 USER_ENDPOINT = "/user"
 MOVIES_ENDPOINT = "/movies"
 REVIEW_ENDPOINT = "/reviews"
+GENRES_ENDPOINT = "/genres"
 
 JUNK_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.invalid.signature"

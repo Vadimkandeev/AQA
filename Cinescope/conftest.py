@@ -266,3 +266,9 @@ def api_manager(session):
     Фикстура для создания экземпляра ApiManager
     """
     return ApiManager(session)
+
+
+@pytest.fixture(scope="function")
+def create_genge():
+    genre = {"name": DataGenerator.generate_genre()}
+    return genre

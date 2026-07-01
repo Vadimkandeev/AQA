@@ -1,5 +1,7 @@
 import os
-
+from faker import Faker
+from random import randint
+faker = Faker()
 
 # def greet(**kwargs):
 #     print(f"Hello, {kwargs["name"]}! You are {kwargs["age"]} years old.")
@@ -142,3 +144,9 @@ import os
 
 # x = os.environ
 # print(x)
+
+
+def generate_genre():
+    return f"{faker.sentence(nb_words=3)}"
+
+print(generate_genre())

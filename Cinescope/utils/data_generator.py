@@ -52,6 +52,12 @@ class DataGenerator:
 
 
     @staticmethod
+    def generate_genre():
+        return f"{faker.sentence(nb_words=2)}"
+
+
+
+    @staticmethod
     def generate_random_movie_description():
         return f"{faker.sentence(nb_words=10)}"
 
