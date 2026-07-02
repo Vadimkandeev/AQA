@@ -1,6 +1,6 @@
 import requests
 from constants import BASE_URL, HEADERS, REGISTER_ENDPOINT, LOGIN_ENDPOINT, ADMIN_DATA, USER_ENDPOINT, LOGOUT_ENDPOINT,\
-    MOVIES_ENDPOINT, REVIEW_ENDPOINT, BASE_API_URL
+    MOVIES_ENDPOINT, REVIEW_ENDPOINT, BASE_API_URL, GENRES_ENDPOINT
 import pytest
 from utils.data_generator import DataGenerator
 from random import randint
@@ -269,6 +269,17 @@ def api_manager(session):
 
 
 @pytest.fixture(scope="function")
-def create_genge():
+def genre_data():
     genre = {"name": DataGenerator.generate_genre()}
     return genre
+
+@pytest.fixture(scope="function")
+def created_genre(genre_data, auth_admin_headers):
+    body = genre_data
+    url_created_genre = f"{BASE_URL}{GENRES_ENDPOINT}"
+    response = requests.post(url_created_genre, json=body, headers=auth_admin_headers)
+    return response.json()
+
+
+
+
