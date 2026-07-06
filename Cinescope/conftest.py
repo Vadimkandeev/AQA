@@ -227,12 +227,13 @@ def created_review(auth_admin_headers, created_movie):
     url_create_review = f"{BASE_URL}{MOVIES_ENDPOINT}/{movie_id}{REVIEW_ENDPOINT}"
 
     response = requests.post(url_create_review, json=body, headers=auth_admin_headers)
-
     # Проверки
     assert response.status_code == 200, "Ошибка создания отзыва"
-    return movie_id
+    return response.json()
 
-# Cоздаём сессию
+
+
+# Cоздаём сесси
 @pytest.fixture(scope="session")
 def session_factory():
     def create_session(tokens):

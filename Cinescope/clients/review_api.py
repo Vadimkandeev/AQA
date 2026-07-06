@@ -26,4 +26,30 @@ class ReviewsApi(CustomRequester):
         )
 
 
+    def edited_review(self, movie, new_data, expected_status=200):
+        movie_id = movie["id"]
+        endpoint = f"{MOVIES_ENDPOINT}/{movie_id}{REVIEW_ENDPOINT}"
+        return self.send_request(
+            method="PATCH",
+            data=new_data,
+            endpoint=endpoint,
+            expected_status=expected_status
+        )
+
+
+    def get_review(self, movie, expected_status=200):
+        movie_id = movie["id"]
+        endpoint = f"{MOVIES_ENDPOINT}/{movie_id}{REVIEW_ENDPOINT}"
+        return self.send_request(
+            method="GET",
+            endpoint=endpoint,
+            expected_status=expected_status
+        )
+
+
+    def show_review(self, ):
+
+
+
+
 
