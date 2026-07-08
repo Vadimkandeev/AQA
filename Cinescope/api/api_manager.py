@@ -1,5 +1,8 @@
 from clients.user_api import UserApi
 from clients.auth_api import AuthApi
+from clients.genres_api import GenresApi
+from clients.review_api import ReviewsApi
+from clients.movies_api import  MoviesApi
 
 class ApiManager:
     """
@@ -13,4 +16,6 @@ class ApiManager:
         self.session = session
         self.auth_api = AuthApi(session)
         self.user_api = UserApi(session)
-        
+        self.genres_api = GenresApi(session)
+        self.review_api = ReviewsApi(session)
+        self.movies_api = MoviesApi(session)
