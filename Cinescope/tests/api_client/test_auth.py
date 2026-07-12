@@ -28,9 +28,10 @@ class TestAuth:
 
         api_manager.auth_api.register_user(body, expected_status=400)
 
-    def test_password_repeat(self, api_manager, random_user_by_user, generate_random_password):
+
+    def test_password_repeat(self, api_manager, random_user_by_user):
         body = random_user_by_user.copy()
-        body["passwordRepeat"] = generate_random_password
+        body["passwordRepeat"] = DataGenerator.generate_random_password()
         api_manager.auth_api.register_user(body, expected_status=400)
 
 
