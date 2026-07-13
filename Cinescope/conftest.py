@@ -75,9 +75,10 @@ def created_user_by_admin(random_user_by_admin, auth_admin_headers):
 @pytest.fixture(scope="function")
 def user_tokens(random_user_by_user, created_user_by_user):
     login_url = f"{BASE_URL}{LOGIN_ENDPOINT}"
+    user_data = random_user_by_user
     login_data = {
-        "email": random_user_by_user["email"],
-        "password": random_user_by_user["password"]
+        "email": user_data["email"],
+        "password": user_data["password"]
     }
 
     response = requests.post(login_url, json=login_data, headers=HEADERS)
