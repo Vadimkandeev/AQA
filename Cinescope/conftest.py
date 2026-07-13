@@ -21,8 +21,7 @@ def random_user_by_user():
         "email": random_email,
         "fullName": random_name,
         "password": random_password,
-        "passwordRepeat": random_password,
-        "roles": ["USER"]
+        "passwordRepeat": random_password
     }
 
 @pytest.fixture(scope = "function")
@@ -233,7 +232,7 @@ def created_review(auth_admin_headers, created_movie):
 
 
 
-# Cоздаём сесси
+# Cоздаём сессии
 @pytest.fixture(scope="session")
 def session_factory():
     def create_session(tokens):

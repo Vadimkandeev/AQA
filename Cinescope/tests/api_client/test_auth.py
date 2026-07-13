@@ -9,7 +9,7 @@ from utils.data_generator import DataGenerator
 
 
 class TestAuth:
-
+    # Регистрация нового пользователя. Позитивная проверка
     def test_register_new_user(self, api_manager, random_user_by_user):
         response = api_manager.auth_api.register_user(random_user_by_user)
         response_data = response.json()
@@ -20,7 +20,7 @@ class TestAuth:
         assert "USER" in response_data["roles"], "Роль USER должна быть у пользователя"
 
 
-
+    # Негативная проверка на отсутствие одного поля в теле запроса
     @pytest.mark.parametrize("missing_field", ["email", "fullName", "password", "passwordRepeat"])
     def test_negative_register_user(self, api_manager, random_user_by_user, missing_field):
         body = random_user_by_user.copy()
@@ -29,13 +29,34 @@ class TestAuth:
         api_manager.auth_api.register_user(body, expected_status=400)
 
 
-    def test_password_repeat(self, api_manager, random_user_by_user):
+    # Негативная проверка на несовпадение паролей
+    def test_register_password_mismatch(self, api_manager, random_user_by_user):
         body = random_user_by_user.copy()
+        body["password"] = DataGenerator.generate_random_password()
         body["passwordRepeat"] = DataGenerator.generate_random_password()
         api_manager.auth_api.register_user(body, expected_status=400)
 
 
+    # Проверка граничных значений длины пароля.
+    @pytest.mark.parametrize("length, expected_status", [(8, 201), (20, 201), (7, 400), (21, 400)])
+    def test_boundary_values(self, api_manager, random_user_by_user, length, expected_status):
+        body = random_user_by_user.copy()
+        body["password"] = DataGenerator.generate_random_password(length)
+        body["passwordRepeat"] = body["password"]
+        api_manager.auth_api.register_user(body, expected_status=expected_status)
 
 
+    def test_register_occupied_email(self, api_manager, random_user_by_user):
+        name = DataGenerator.generate_random_name()
+        password = DataGenerator.generate_random_password()
+
+        response = api_manager.auth_api.register_user(random_user_by_user, expected_status=201)
+        email = response.json()["email"]
+
+        new_body = {"fullName": name, "password": password, "passwordRepeat": password, "email": email}
+        api_manager.auth_api.register_user(new_body, expected_status=409)
+
+
+    def login_user(self, ):
 
 
