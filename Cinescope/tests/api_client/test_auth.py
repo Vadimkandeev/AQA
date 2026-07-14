@@ -57,6 +57,30 @@ class TestAuth:
         api_manager.auth_api.register_user(new_body, expected_status=409)
 
 
-    def login_user(self, ):
+    def test_user_logged_in(self, api_manager, random_user_by_user, created_user_by_user):
+        user_data = random_user_by_user
+        login_data = {
+            "email": user_data["email"],
+            "password": user_data["password"]
+        }
+
+        response = api_manager.auth_api.login_user(login_data)
+        response_data = response.json()
+
+        # Проверки
+        assert response_data["user"]["email"] == random_user_by_user["email"], "Email не совпадает"
+        assert "accessToken" in response_data, "accessToken отсутствует в ответе"
+        assert response_data["accessToken"], "Пустое значение accessToken"
+
+
+    def test_invalid_user_or_password(self, api_manager, random_user_by_user, created_user_by_user):
+        user_data = random_user_by_user
+        login_data = {
+            "email": user_data["email"],
+            "password": DataGenerator.generate_random_password()
+        }
+
+        api_manager.auth_api.login_user(login_data, expected_status=401)
+
 
 

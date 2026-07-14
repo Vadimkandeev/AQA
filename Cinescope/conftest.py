@@ -47,11 +47,10 @@ def created_user_by_user(random_user_by_user):
     response = requests.post(register_url, json=random_user_by_user, headers=HEADERS)
 
     body = response.json()
-    print(body)
     assert response.status_code == 201, "Ошибка регистрации пользователя"
     assert body['fullName'] == random_user_by_user['fullName']
 
-    print("USER CREATE:", random_user_by_user["email"])
+
 
     return body
 
@@ -62,11 +61,8 @@ def created_user_by_admin(random_user_by_admin, auth_admin_headers):
     register_url = f"{BASE_URL}{USER_ENDPOINT}"
     response = requests.post(register_url, json=random_user_by_admin, headers=auth_admin_headers)
     body = response.json()
-    print(body)
     assert response.status_code == 201, "Ошибка регистрации пользователя"
     assert body['fullName'] == random_user_by_admin['fullName']
-
-    print("ADMIN CREATE:", random_user_by_admin["email"])
 
     return body
 
@@ -103,8 +99,7 @@ def admin_tokens():
     # Получаем токен
     data = response.json()
     assert data.get("accessToken"), "accessToken отсутствует в ответе"
-    assert data.get("refreshToken"), "refreshToken отсутствует в ответе"
-    token = {"accessToken": data.get("accessToken"), "refreshToken": data.get("refreshToken")}
+    token = {"accessToken": data.get("accessToken")}
     return token
 
 
