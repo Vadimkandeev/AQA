@@ -46,6 +46,7 @@ class TestAuth:
         api_manager.auth_api.register_user(body, expected_status=expected_status)
 
 
+    # Регистрация пользователя с занятым имейлом.
     def test_register_occupied_email(self, api_manager, random_user_by_user):
         name = DataGenerator.generate_random_name()
         password = DataGenerator.generate_random_password()
@@ -57,6 +58,7 @@ class TestAuth:
         api_manager.auth_api.register_user(new_body, expected_status=409)
 
 
+    # Позитивная проверка авторизации пользователя.
     def test_user_logged_in(self, api_manager, random_user_by_user, created_user_by_user):
         user_data = random_user_by_user
         login_data = {
@@ -73,6 +75,7 @@ class TestAuth:
         assert response_data["accessToken"], "Пустое значение accessToken"
 
 
+    # Проверка авторизации пользователя с невалидным паролем.
     def test_invalid_user_or_password(self, api_manager, random_user_by_user, created_user_by_user):
         user_data = random_user_by_user
         login_data = {
@@ -81,6 +84,19 @@ class TestAuth:
         }
 
         api_manager.auth_api.login_user(login_data, expected_status=401)
+
+
+    # Проверка разлогина пользователя и удаления токена.
+    def test_logout_user(self, api_manager, created_user_by_user, random_user_by_user, user_tokens):
+        body = (random_user_by_user["email"], random_user_by_user["password"])
+        api_manager.auth_api.authenticate(body)
+        api_manager.auth_api.logout_user()
+        api_manager.user_api.get_user_info(expected_status=401)
+
+
+
+
+
 
 
 

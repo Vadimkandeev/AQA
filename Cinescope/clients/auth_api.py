@@ -50,7 +50,7 @@ class AuthApi(CustomRequester):
         self._update_session_headers(**{"authorization": "Bearer" + token})
 
 
-    def logout(self, expected_status=200):
+    def logout_user(self, expected_status=200):
         """
         Разлогин пользователя
         :param expected_status: Ожидаемый статус
