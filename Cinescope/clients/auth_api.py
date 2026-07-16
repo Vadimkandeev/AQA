@@ -1,12 +1,13 @@
 from custom_requester.custom_requester import CustomRequester
-from constants import REGISTER_ENDPOINT, LOGIN_ENDPOINT, LOGOUT_ENDPOINT,REFRESH_TOKENS_ENDPOINT, CONFIRM_ENDPOINT
+from constants import REGISTER_ENDPOINT, LOGIN_ENDPOINT, LOGOUT_ENDPOINT,REFRESH_TOKENS_ENDPOINT, CONFIRM_ENDPOINT,\
+    BASE_URL, USER_ENDPOINT
 
 class AuthApi(CustomRequester):
     """
     Класс для работы с аутентификацией
     """
     def __init__(self, session):
-        super().__init__(session=session, base_url="https://auth.dev-cinescope.coconutqa.ru/")
+        super().__init__(session=session, base_url=BASE_URL)
 
 
     def register_user(self, user_data, expected_status=201):
@@ -47,7 +48,7 @@ class AuthApi(CustomRequester):
             raise KeyError("token is missing")
 
         token = response["accessToken"]
-        self._update_session_headers(**{"authorization": "Bearer" + token})
+        self._update_session_headers(**{"authorization": "Bearer " + token})
 
 
     def logout_user(self, expected_status=200):
@@ -84,5 +85,16 @@ class AuthApi(CustomRequester):
             endpoint=f"{CONFIRM_ENDPOINT}?token={token}",
             expected_status=expected_status
         )
+
+
+    def get_user_info_for_user(self, expected_status=200):
+        """
+               ПОлучение информации о пользователе от имени самого пользователя.
+               :param expected_status: Ожидаемый статус-код
+               """
+        return self.send_request(
+            method="GET",
+            endpoint=f"{USER_ENDPOINT}/me",
+            expected_status=expected_status)
 
 
