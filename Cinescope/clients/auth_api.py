@@ -38,8 +38,8 @@ class AuthApi(CustomRequester):
 
     def authenticate(self, user_creds):
         login_data = {
-            "email": user_creds[0],
-            "password": user_creds[1]
+            "email": user_creds["email"],
+            "password": user_creds["password"]
         }
 
         response = self.login_user(login_data).json()
@@ -47,7 +47,7 @@ class AuthApi(CustomRequester):
             raise KeyError("token is missing")
 
         token = response["accessToken"]
-        self._update_session_headers(**{"authorization": "Bearer" + token})
+        self._update_session_headers(**{"authorization ": "Bearer" + token})
 
 
     def logout_user(self, expected_status=200):

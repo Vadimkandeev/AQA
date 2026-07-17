@@ -2,7 +2,6 @@ import requests
 from constants import BASE_URL, HEADERS, REGISTER_ENDPOINT, LOGIN_ENDPOINT, ADMIN_DATA, USER_ENDPOINT, LOGOUT_ENDPOINT,\
     MOVIES_ENDPOINT, REVIEW_ENDPOINT, BASE_API_URL, GENRES_ENDPOINT
 import pytest
-from utils.data_generator import DataGenerator
 from random import randint
 from api.api_manager import ApiManager
 from utils.data_generator import DataGenerator
@@ -88,7 +87,7 @@ class TestAuth:
 
     # Проверка разлогина пользователя и удаления токена.
     def test_logout_user(self, api_manager, created_user_by_user, random_user_by_user, user_tokens):
-        body = (random_user_by_user["email"], random_user_by_user["password"])
+        body = {"email": random_user_by_user["email"], "password": random_user_by_user["password"]}
         api_manager.auth_api.authenticate(body)
         api_manager.auth_api.logout_user()
         api_manager.user_api.get_user_info(expected_status=401)
