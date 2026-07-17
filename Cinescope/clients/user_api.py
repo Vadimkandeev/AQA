@@ -9,11 +9,11 @@ class UserApi(CustomRequester):
     """
 
     def __init__(self, session):
-        super().__init__(session=session, base_url=BASE_API_URL)
+        super().__init__(session=session, base_url=BASE_API_URL, )
         self.session = session
 
 
-    def get_user_info(self, user_id, expected_status=200):
+    def get_user_info_for_admin(self, user_id, expected_status=200):
         """
         ПОлучение информации о пользователе.
         :param user_id: АйДи пользователя
@@ -77,4 +77,9 @@ class UserApi(CustomRequester):
             endpoint=f"{USER_ENDPOINT}{PARAMS_FOR_GETLIST}",
             expected_status=expected_status
         )
+
+
+
+
+
 
