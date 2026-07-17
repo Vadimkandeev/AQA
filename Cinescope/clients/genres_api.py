@@ -1,11 +1,11 @@
 from custom_requester.custom_requester import CustomRequester
-from constants import GENRES_ENDPOINT, BASE_URL
+from constants import GENRES_ENDPOINT, BASE_API_URL
 
 class GenresApi(CustomRequester):
     def __init__(self, session):
-        super().__init__(session=session, base_url=BASE_URL)
+        super().__init__(session=session, base_url=BASE_API_URL)
 
-    def created_genres(self, genre_body, expected_status=201):
+    def created_genres(self, genre_body, expected_status=200):
         return self.send_request(
             method="POST",
             data=genre_body,
