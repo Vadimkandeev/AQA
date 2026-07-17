@@ -89,7 +89,7 @@ class TestAuth:
     # Проверка разлогина пользователя и удаления токена.
     @pytest.mark.xfail(reason="logout не инвалидирует accessToken — баг сервера, ждём 401, приходит 200")
     def test_logout_user(self, api_manager, created_user_by_user, random_user_by_user):
-        body = (random_user_by_user["email"], random_user_by_user["password"])
+        body = {"email": random_user_by_user["email"], "password": random_user_by_user["password"]}
         api_manager.auth_api.authenticate(body)
         api_manager.auth_api.logout_user()
         api_manager.auth_api.get_user_info_for_user(expected_status=401)
