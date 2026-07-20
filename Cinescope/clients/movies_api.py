@@ -1,5 +1,5 @@
 from custom_requester.custom_requester import CustomRequester
-from constants import MOVIES_ENDPOINT, BASE_URL
+from constants import MOVIES_ENDPOINT, BASE_API_URL
 
 
 
@@ -8,7 +8,7 @@ class MoviesApi(CustomRequester):
     Класс для работы с Афишами
     """
     def __init__(self, session):
-        super().__init__(session=session, base_url=BASE_URL)
+        super().__init__(session=session, base_url=BASE_API_URL)
 
 
     def create_movie(self, movie, expected_status=201):

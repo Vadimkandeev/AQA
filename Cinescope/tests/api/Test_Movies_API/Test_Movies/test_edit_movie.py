@@ -6,12 +6,12 @@ from constants import BASE_URL, MOVIES_ENDPOINT
 
 class TestEditMovie:
     # Создаем афишу
-    def test_edit_movie(self, auth_admin_headers, created_movie, created_random_movie):
+    def test_edit_movie(self, auth_admin_headers, created_movie, created_data_movie):
 
         edit_movie_url = f"{BASE_URL}{MOVIES_ENDPOINT}"
 
         body_for_request = created_movie
-        random_body = created_random_movie
+        random_body = created_data_movie
         body_for_request["name"] = random_body["name"]
         body_for_request["description"] = random_body["description"]
 
@@ -33,11 +33,11 @@ class TestEditMovie:
 
     # Проводим невалидный запрос на создание афиши с токеном пользователя вместо админа.
     # Вызов статус-кода 403
-    def test_negative_edit_movie_by_unlegal_token(self, created_random_movie, auth_user_headers, created_movie):
+    def test_negative_edit_movie_by_unlegal_token(self, created_data_movie, auth_user_headers, created_movie):
         edit_movie_url = f"{BASE_URL}{MOVIES_ENDPOINT}"
 
         body_for_request = created_movie
-        random_body = created_random_movie
+        random_body = created_data_movie
         body_for_request["name"] = random_body["name"]
         body_for_request["description"] = random_body["description"]
 
@@ -54,10 +54,10 @@ class TestEditMovie:
 
     # Проводим невалидный запрос на создание афиши с существующим названием.
     # Вызов статус-кода 409
-    def test_negative_create_movie_duplicate_mane(self, created_random_movie, auth_admin_headers):
+    def test_negative_create_movie_duplicate_mane(self, created_data_movie, auth_admin_headers):
         create_movie_url = f"{BASE_URL}{MOVIES_ENDPOINT}"
 
-        body = created_random_movie
+        body = created_data_movie
 
         requests.post(create_movie_url, json=body, headers=auth_admin_headers)
         response = requests.post(create_movie_url, json=body, headers=auth_admin_headers)

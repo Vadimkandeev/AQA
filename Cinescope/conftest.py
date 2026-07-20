@@ -94,7 +94,7 @@ def admin_tokens():
     login_url = f"{BASE_URL}{LOGIN_ENDPOINT}"
     login_data = ADMIN_DATA
     response = requests.post(login_url, json=login_data, headers=HEADERS)
-    assert response.status_code == 200, "Ошибка авторизации"
+    assert response.status_code == 201, "Ошибка авторизации"
 
     # Получаем токен
     data = response.json()
@@ -149,7 +149,8 @@ def logout_user(user_tokens):
 
 # Создаем тело запроса для создания киноафиши
 @pytest.fixture(scope = "function")
-def created_random_movie():
+def created_data_movie(created_random_genre):
+    genre_id = created_random_genre["id"]
     movie_name = DataGenerator.generate_random_movie_name()
     movie_description = DataGenerator.generate_random_movie_description()
     body = {
@@ -159,17 +160,17 @@ def created_random_movie():
       "description": movie_description,
       "location": "SPB",
       "published": True,
-      "genreId": 2
+      "genreId": genre_id
     }
     return body
 
 
 #Создание афиши
 @pytest.fixture(scope = "function")
-def created_movie(created_random_movie, auth_admin_headers):
+def created_movie(created_data_movie, auth_admin_headers):
     create_movie_url = f"{BASE_API_URL}{MOVIES_ENDPOINT}"
 
-    body = created_random_movie
+    body = created_data_movie
 
     response = requests.post(create_movie_url, json=body, headers=auth_admin_headers)
 
@@ -265,16 +266,22 @@ def api_manager(session):
 
 
 @pytest.fixture(scope="function")
-def genre_data():
+def generate_genre_data():
     genre = {"name": DataGenerator.generate_genre()}
     return genre
 
+
+
 @pytest.fixture(scope="function")
-def created_genre(genre_data, auth_admin_headers):
-    body = genre_data
-    url_created_genre = f"{BASE_URL}{GENRES_ENDPOINT}"
+def created_random_genre(generate_genre_data, auth_admin_headers):
+    body = generate_genre_data
+    url_created_genre = f"{BASE_API_URL}{GENRES_ENDPOINT}"
     response = requests.post(url_created_genre, json=body, headers=auth_admin_headers)
+    print(response.json())
     return response.json()
+
+
+
 
 
 

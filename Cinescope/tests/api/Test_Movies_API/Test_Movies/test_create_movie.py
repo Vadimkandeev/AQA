@@ -4,11 +4,11 @@ from constants import BASE_URL, MOVIES_ENDPOINT
 
 class TestCreateMovie:
     # Создаем афишу
-    def test_create_movie(self, auth_admin_headers, created_random_movie):
+    def test_create_movie(self, auth_admin_headers, created_data_movie):
 
         create_movie_url = f"{BASE_URL}{MOVIES_ENDPOINT}"
 
-        body = created_random_movie
+        body = created_data_movie
 
         response = requests.post(create_movie_url, json=body, headers=auth_admin_headers)
 
@@ -20,19 +20,19 @@ class TestCreateMovie:
         assert response.status_code == 201, "Ошибка создания афиши"
         response_data = response.json()
 
-        assert response_data["name"] == created_random_movie["name"], "Названия фильмов не совпадают"
-        assert response_data["description"] == created_random_movie["description"], "Описания фильмов не совпадают"
-        assert response_data["location"] == created_random_movie["location"], "Места локации фильмов не совпадают"
+        assert response_data["name"] == created_data_movie["name"], "Названия фильмов не совпадают"
+        assert response_data["description"] == created_data_movie["description"], "Описания фильмов не совпадают"
+        assert response_data["location"] == created_data_movie["location"], "Места локации фильмов не совпадают"
         assert "id" in response_data, "ID  афиши отсутствует в ответе"
 
 
     # Проводим невалидный запрос на создание афиши с токеном пользователя вместо админа.
     # Вызов статус-кода 403
-    def test_negative_create_movie_by_unlegal_token(self, created_random_movie, auth_user_headers):
+    def test_negative_create_movie_by_unlegal_token(self, created_data_movie, auth_user_headers):
 
         create_movie_url = f"{BASE_URL}{MOVIES_ENDPOINT}"
 
-        body = created_random_movie
+        body = created_data_movie
 
         response = requests.post(create_movie_url, json=body, headers=auth_user_headers)
 
@@ -47,10 +47,10 @@ class TestCreateMovie:
 
     # Проводим невалидный запрос на создание афиши с существующим названием.
     # Вызов статус-кода 409
-    def test_negative_create_movie_duplicate_mane(self, created_random_movie, auth_admin_headers):
+    def test_negative_create_movie_duplicate_mane(self, created_data_movie, auth_admin_headers):
         create_movie_url = f"{BASE_URL}{MOVIES_ENDPOINT}"
 
-        body = created_random_movie
+        body = created_data_movie
 
         requests.post(create_movie_url, json=body, headers=auth_admin_headers)
         response = requests.post(create_movie_url, json=body, headers=auth_admin_headers)

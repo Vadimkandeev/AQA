@@ -7,13 +7,13 @@ from custom_requester.custom_requester import CustomRequester
 
 class TestEditMovie:
     # Создаем афишу
-    def test_edit_movie(self, created_movie, created_random_movie, session_factory, admin_tokens):
+    def test_edit_movie(self, created_movie, created_data_movie, session_factory, admin_tokens):
 
 
 
         #body_for_request = created_movie
         body_for_request = {}
-        random_body = created_random_movie
+        random_body = created_data_movie
         movie_id = created_movie["id"]
         body_for_request["name"] = random_body["name"]
         body_for_request["description"] = random_body["description"]
@@ -38,11 +38,11 @@ class TestEditMovie:
 
     # Проводим невалидный запрос на создание афиши с токеном пользователя вместо админа.
     # Вызов статус-кода 403
-    def test_negative_edit_movie_by_unlegal_token(self, created_random_movie, created_movie, session_factory, user_tokens):
+    def test_negative_edit_movie_by_unlegal_token(self, created_data_movie, created_movie, session_factory, user_tokens):
 
 
         body_for_request = {}
-        random_body = created_random_movie
+        random_body = created_data_movie
         body_for_request["name"] = random_body["name"]
         body_for_request["description"] = random_body["description"]
         movie_id = created_movie["id"]

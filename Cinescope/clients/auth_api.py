@@ -48,7 +48,7 @@ class AuthApi(CustomRequester):
             raise KeyError("token is missing")
 
         token = response["accessToken"]
-        self._update_session_headers(**{"authorization": "Bearer " + token})
+        self._update_session_headers(**{"Authorization": "Bearer " + token})
 
 
     def logout_user(self, expected_status=200):
