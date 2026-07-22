@@ -6,7 +6,7 @@ class ReviewsApi(CustomRequester):
     def __init__(self, session):
         super().__init__(session=session, base_url=BASE_API_URL)
 
-    def created_review(self, movie, data_review, expected_status=200):
+    def created_review(self, movie, data_review, expected_status=201):
         movie_id = movie["id"]
         endpoint = f"{MOVIES_ENDPOINT}/{movie_id}{REVIEW_ENDPOINT}"
         return self.send_request(

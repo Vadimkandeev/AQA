@@ -6,9 +6,9 @@ from constants import BASE_URL, MOVIES_ENDPOINT, REVIEW_ENDPOINT
 
 class TestShowReview:
     # Показываем отзыв на фильм
-    def test_show_review(self, auth_admin_headers, created_review, created_user_by_admin):
+    def test_show_review(self, auth_admin_headers, created_new_review, created_user_by_admin):
 
-        movie_id = created_review
+        movie_id = created_new_review
 
         user_id = created_user_by_admin["id"]
 
@@ -26,10 +26,10 @@ class TestShowReview:
 
 
 # Показываем отзыв на удаленный фильм. Ожидается 404
-    def test_negative_hide_review(self, auth_admin_headers, created_review, created_user_by_admin):
+    def test_negative_hide_review(self, auth_admin_headers, created_new_review, created_user_by_admin):
 
 
-        movie_id = created_review
+        movie_id = created_new_review
 
         body = created_user_by_admin
 

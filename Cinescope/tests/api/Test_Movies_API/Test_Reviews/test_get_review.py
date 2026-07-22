@@ -5,10 +5,10 @@ from constants import BASE_URL, MOVIES_ENDPOINT, REVIEW_ENDPOINT
 
 class TestGetReview:
     # Получаем отзыв на фильм
-    def test_get_review(self, auth_admin_headers, created_review):
+    def test_get_review(self, auth_admin_headers, created_new_review):
 
 
-        movie_id = created_review
+        movie_id = created_new_review
 
         url_create_review = f"{BASE_URL}{MOVIES_ENDPOINT}/{movie_id}{REVIEW_ENDPOINT}"
 
@@ -23,10 +23,10 @@ class TestGetReview:
 
 
  # Получаем отзыв на удаленный фильм. Ожидается 404
-    def test_negative_get_review(self, auth_admin_headers, created_review):
+    def test_negative_get_review(self, auth_admin_headers, created_new_review):
 
 
-        movie_id = created_review
+        movie_id = created_new_review
 
         url_create_review = f"{BASE_URL}{MOVIES_ENDPOINT}/{movie_id}{REVIEW_ENDPOINT}"
 

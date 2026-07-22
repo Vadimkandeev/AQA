@@ -5,9 +5,9 @@ from utils.data_generator import DataGenerator
 
 class TestEditReview:
     # Меняем отзыв на фильм
-    def test_edit_review(self, auth_admin_headers, created_review):
+    def test_edit_review(self, auth_admin_headers, created_new_review):
 
-        response_body = created_review
+        response_body = created_new_review
 
         movie_id = response_body["id"]
 
@@ -26,9 +26,9 @@ class TestEditReview:
 
 
     # Меняем отзыв на несуществующий фильм. Ожидается 404
-    def test_negative_edit_review(self, auth_admin_headers, created_review):
+    def test_negative_edit_review(self, auth_admin_headers, created_new_review):
 
-        response_body = created_review
+        response_body = created_new_review
 
         movie_id = response_body["id"]
 

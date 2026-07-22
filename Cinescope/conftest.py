@@ -185,7 +185,7 @@ def created_movie(created_data_movie, auth_admin_headers):
 
 
 # Удаление афиши
-@pytest.fixture(scope = "session")
+@pytest.fixture(scope = "function")
 def delete_movie(auth_admin_headers, created_movie):
     movie = created_movie
     movie_id = movie["id"]
@@ -203,7 +203,7 @@ def delete_movie(auth_admin_headers, created_movie):
 
 
 # Создаем строку параметров для запроса списка афиш
-@pytest.fixture(scope = "session")
+@pytest.fixture(scope = "function")
 def created_params_for_get_list():
     params = f"?pageSize={randint(1, 10)}&page={randint(1, 5)}&minPrice={randint(1, 2)}\
     &maxPrice={randint(20, 1000)}&locations=MSK&locations=SPB&published=true&genreId=1&createdAt=asc"
@@ -211,8 +211,8 @@ def created_params_for_get_list():
 
 
 # Создаем отзыв о фильме
-@pytest.fixture(scope = "session")
-def created_review(auth_admin_headers, created_movie):
+@pytest.fixture(scope = "function")
+def created_new_review(auth_admin_headers, created_movie):
 
     response_body = created_movie
 
@@ -220,11 +220,11 @@ def created_review(auth_admin_headers, created_movie):
 
     body = DataGenerator.created_body_for_review()
 
-    url_create_review = f"{BASE_URL}{MOVIES_ENDPOINT}/{movie_id}{REVIEW_ENDPOINT}"
+    url_create_review = f"{BASE_API_URL}{MOVIES_ENDPOINT}/{movie_id}{REVIEW_ENDPOINT}"
 
     response = requests.post(url_create_review, json=body, headers=auth_admin_headers)
     # Проверки
-    assert response.status_code == 200, "Ошибка создания отзыва"
+    assert response.status_code == 201, "Ошибка создания отзыва"
     return response.json()
 
 
