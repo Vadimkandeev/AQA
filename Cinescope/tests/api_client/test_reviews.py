@@ -83,6 +83,17 @@ class TestReviews:
 
 
 
+    def test_hide_review(self, api_manager, created_new_review, created_movie, auth_admin_headers, created_user_by_admin):
+
+        api_manager.review_api.headers.update(auth_admin_headers)
+        api_manager.auth_api.headers.update(auth_admin_headers)
+        response = api_manager.auth_api.get_user_info_for_user()
+        admin_data = response.json()
+
+        api_manager.review_api.hide_review(created_movie, admin_data["id"])
+
+
+
 
 
 

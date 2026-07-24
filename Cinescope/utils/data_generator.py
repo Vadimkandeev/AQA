@@ -81,3 +81,12 @@ class DataGenerator:
 
         return body
 
+
+    @staticmethod
+    def created_card_data():
+        return {
+            "card_number": faker.credit_card_number(),
+            "expiration_date": faker.credit_card_expire(),
+            "security_code": random.randint(100, 999)
+        }
+

@@ -3,6 +3,8 @@ from clients.auth_api import AuthApi
 from clients.genres_api import GenresApi
 from clients.review_api import ReviewsApi
 from clients.movies_api import  MoviesApi
+from payments.payment_api import PaymentApi
+
 
 class ApiManager:
     """
@@ -19,3 +21,4 @@ class ApiManager:
         self.genres_api = GenresApi(session)
         self.review_api = ReviewsApi(session)
         self.movies_api = MoviesApi(session)
+        self.payments_api = PaymentApi(session)

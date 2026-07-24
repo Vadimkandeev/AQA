@@ -1,5 +1,6 @@
 BASE_URL = "https://auth.dev-cinescope.coconutqa.ru"
 BASE_API_URL = "https://api.dev-cinescope.coconutqa.ru"
+BASE_PAYMENT_URL = "https://payment.dev-cinescope.coconutqa.ru"
 HEADERS = {
     "Content-Type": "application/json",
     "Accept": "application/json"
@@ -31,5 +32,7 @@ USER_ENDPOINT = "/user"
 MOVIES_ENDPOINT = "/movies"
 REVIEW_ENDPOINT = "/reviews"
 GENRES_ENDPOINT = "/genres"
+CREATE_ENDPOINT = "/create"
+FIND_ALL_ENDPOINT = "/find-all"
 
 JUNK_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.invalid.signature"
