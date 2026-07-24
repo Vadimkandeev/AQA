@@ -1,4 +1,4 @@
-from constants import  ADMIN_DATA, PARAMS_FOR_GETLIST
+from constants import  ADMIN_DATA, PARAMS_FOR_GETLIST_MOVIES
 import pytest
 from random import randint
 from api.api_manager import ApiManager
@@ -49,7 +49,7 @@ class TestMovies:
     def test_get_all_movies(self, auth_admin_headers, created_data_movie, api_manager, created_movie):
 
         api_manager.movies_api.headers.update(auth_admin_headers)
-        response = api_manager.movies_api.get_all_movies(PARAMS_FOR_GETLIST)
+        response = api_manager.movies_api.get_all_movies(PARAMS_FOR_GETLIST_MOVIES)
         # response_data = response.json()
         #
         # assert response_data["name"] == created_movie["name"], "Имя фильма не совпадает с заданным"

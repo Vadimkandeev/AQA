@@ -2,14 +2,14 @@ import pytest_test
 import requests
 
 from conftest import created_user_by_admin
-from constants import BASE_URL, USER_ENDPOINT, PARAMS_FOR_GETLIST
+from constants import BASE_URL, USER_ENDPOINT, PARAMS_FOR_GETLIST_MOVIES
 
 
 class TestGetInformUser:
     # Проводим позитивную проверку. Запрашиваем список пользователей
     def test_get_list_users(self, created_user_by_admin, auth_admin_headers):
 
-        url_get_list_users = f"{BASE_URL}{USER_ENDPOINT}{PARAMS_FOR_GETLIST}"
+        url_get_list_users = f"{BASE_URL}{USER_ENDPOINT}{PARAMS_FOR_GETLIST_MOVIES}"
 
         response = requests.get(url_get_list_users, headers=auth_admin_headers)
         # Логируем ответ для диагностики
@@ -24,7 +24,7 @@ class TestGetInformUser:
     # Проводим Негативную проверку. Нарушение формата параметров
     def test_invalid_get_list_users(self, created_user_by_admin, auth_admin_headers):
 
-        parameters = PARAMS_FOR_GETLIST
+        parameters = PARAMS_FOR_GETLIST_MOVIES
         parameters = parameters.replace("2", "F")
 
 
@@ -45,7 +45,7 @@ class TestGetInformUser:
 
     def test_invalid_resp_user_data(self, created_user_by_admin, auth_user_headers):
 
-        url_get_list_users = f"{BASE_URL}{USER_ENDPOINT}{PARAMS_FOR_GETLIST}"
+        url_get_list_users = f"{BASE_URL}{USER_ENDPOINT}{PARAMS_FOR_GETLIST_MOVIES}"
 
         response = requests.get(url_get_list_users, headers=auth_user_headers)
         # Логируем ответ для диагностики

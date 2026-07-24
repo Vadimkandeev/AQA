@@ -6,6 +6,8 @@ from utils.data_generator import DataGenerator
 from random import randint
 from api.api_manager import ApiManager
 
+
+
 @pytest.fixture(scope="function")
 def random_user_by_user():
     """
@@ -279,6 +281,28 @@ def created_random_genre(generate_genre_data, auth_admin_headers):
     response = requests.post(url_created_genre, json=body, headers=auth_admin_headers)
     print(response.json())
     return response.json()
+
+
+# Создаем данные для платежа
+@pytest.fixture(scope="function")
+def created_payment_data(created_movie):
+    generator_data = DataGenerator.created_card_data()
+# Не принимает номер карты. Решить, какой номер карты передавать
+#----------------------------------------------------
+    data = {
+        "movieId": created_movie["id"],
+        "amount": randint(1, 5),
+        "card": {
+            "cardNumber": "1234567890123456",
+            "cardHolder": DataGenerator.generate_random_name(),
+            "expirationDate": generator_data["expiration_date"],
+            "securityCode":  generator_data["security_code"]
+        }
+    }
+
+    return data
+
+
 
 
 

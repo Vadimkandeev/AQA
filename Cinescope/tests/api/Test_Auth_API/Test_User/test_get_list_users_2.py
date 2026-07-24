@@ -2,7 +2,7 @@ import pytest_test
 import requests
 
 from conftest import created_user_by_admin
-from constants import BASE_URL, USER_ENDPOINT, PARAMS_FOR_GETLIST
+from constants import BASE_URL, USER_ENDPOINT, PARAMS_FOR_GETLIST_MOVIES
 from custom_requester.custom_requester import CustomRequester
 
 
@@ -10,7 +10,7 @@ class TestGetInformUser:
     # Проводим позитивную проверку. Запрашиваем список пользователей
     def test_get_list_users(self, created_user_by_admin, session_factory, admin_tokens):
 
-        url_get_list_users = f"{USER_ENDPOINT}{PARAMS_FOR_GETLIST}"
+        url_get_list_users = f"{USER_ENDPOINT}{PARAMS_FOR_GETLIST_MOVIES}"
 
         admin_session = session_factory(admin_tokens)
 
@@ -23,7 +23,7 @@ class TestGetInformUser:
     # Проводим Негативную проверку. Нарушение формата параметров
     def test_invalid_get_list_users(self, created_user_by_admin, session_factory, admin_tokens):
 
-        parameters = PARAMS_FOR_GETLIST
+        parameters = PARAMS_FOR_GETLIST_MOVIES
         parameters = parameters.replace("2", "F")
 
         url_get_list_users = f"{USER_ENDPOINT}{parameters}"
@@ -41,7 +41,7 @@ class TestGetInformUser:
 
     def test_invalid_resp_user_data(self, created_user_by_admin, session_factory, user_tokens):
 
-        url_get_list_users = f"{USER_ENDPOINT}{PARAMS_FOR_GETLIST}"
+        url_get_list_users = f"{USER_ENDPOINT}{PARAMS_FOR_GETLIST_MOVIES}"
 
 
         admin_session = session_factory(user_tokens)

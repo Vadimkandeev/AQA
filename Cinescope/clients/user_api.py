@@ -1,6 +1,6 @@
 from custom_requester.custom_requester import CustomRequester
 from constants import REGISTER_ENDPOINT, LOGIN_ENDPOINT, BASE_API_URL, USER_ENDPOINT, BODY_FROM_CHANGE_USER_DATA,\
-PARAMS_FOR_GETLIST
+PARAMS_FOR_GETLIST_MOVIES
 
 
 class UserApi(CustomRequester):
@@ -74,7 +74,7 @@ class UserApi(CustomRequester):
         """
         return self.send_request(
             method="GET",
-            endpoint=f"{USER_ENDPOINT}{PARAMS_FOR_GETLIST}",
+            endpoint=f"{USER_ENDPOINT}{PARAMS_FOR_GETLIST_MOVIES}",
             expected_status=expected_status
         )
 
