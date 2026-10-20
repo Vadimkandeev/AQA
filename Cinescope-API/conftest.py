@@ -5,6 +5,7 @@ import pytest
 from utils.data_generator import DataGenerator
 from random import randint
 from api.api_manager import ApiManager
+from resources.user_creds import SuperAdminCreds
 
 
 
@@ -304,9 +305,34 @@ def created_payment_data(created_movie):
 
 
 
+@pytest.fixture
+def user_session():
+    user_pool = []
+
+    def _create_user_session():
+        session = requests.Session()
+        user_session = ApiManager(session)
+        user_pool.append(user_session)
+        return user_session
+
+    yield _create_user_session
+
+    for user in user_pool:
+        user.close_session()
 
 
+@pytest.fixture
+def super_admin(user_session):
+    new_session = user_session()
 
+    super_admin = User(
+        SuperAdminCreds.USERNAME,
+        SuperAdminCreds.PASSWORD,
+        "[SUPER_ADMIN]",
+        new_session
+    )
 
+    super_admin.api.auth_api.authentifacate(super_admin.creds)
+    return super_admin
 
 

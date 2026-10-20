@@ -22,3 +22,7 @@ class ApiManager:
         self.review_api = ReviewsApi(session)
         self.movies_api = MoviesApi(session)
         self.payments_api = PaymentApi(session)
+
+
+    def close_session(self):
+        self.session.close()

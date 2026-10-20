@@ -6,8 +6,11 @@ class User:
         self.email = email
         self.password = password
         self.roles = roles
-        self.api = api
+        self.api = api # Сюда будем передавать Api manager  для запросов
 
     @property
     def creds(self):
+        """
+        Возвращает кортеж (email, password)
+        """
         return self.email, self.password
