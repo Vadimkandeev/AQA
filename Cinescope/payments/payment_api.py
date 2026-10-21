@@ -35,7 +35,7 @@ class PaymentApi(CustomRequester):
         """
         return self.send_request(
             method="GET",
-            endpoint=f"{USER_ENDPOINT}{USER_ENDPOINT}/{user_id}",
+            endpoint=f"{USER_ENDPOINT}/{user_id}",
             expected_status=expected_status
         )
 
@@ -48,7 +48,7 @@ class PaymentApi(CustomRequester):
         """
         return self.send_request(
             method="GET",
-            endpoint=f"{USER_ENDPOINT}{USER_ENDPOINT}",
+            endpoint=f"{USER_ENDPOINT}",
             expected_status=expected_status
         )
 
@@ -62,6 +62,6 @@ class PaymentApi(CustomRequester):
         """
         return self.send_request(
             method="GET",
-            endpoint=f"{USER_ENDPOINT}{USER_ENDPOINT}/{params}",
-            expected_status=expected_status #+++++++++++++++++++++++++++++++++++++++++++++++++
+            endpoint=f"{FIND_ALL_ENDPOINT}/{params}",
+            expected_status=expected_status
         )

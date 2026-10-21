@@ -1,4 +1,4 @@
-from constants import  ADMIN_DATA, PARAMS_FOR_GETLIST
+from constants import  ADMIN_DATA, PARAMS_FOR_GETLIST_MOVIES
 import pytest
 from random import randint
 from api.api_manager import ApiManager

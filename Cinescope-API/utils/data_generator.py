@@ -1,0 +1,92 @@
+import random
+import string
+from faker import Faker
+from random import randint
+
+faker = Faker()
+
+
+class DataGenerator:
+
+    @staticmethod
+    def generate_random_email():
+        random_string = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
+        return f"kek{random_string}@gmail.com"
+
+
+    @staticmethod
+    def generate_random_name():
+        return f"{faker.first_name()} {faker.last_name()}"
+
+
+
+    @staticmethod
+    def generate_random_password(length=None):
+        """
+        Генерация пароля, соответствующего требованиям:
+        - Минимум 1 буква.
+        - Минимум 1 цифра.
+        - Допустимые символы.
+        - Длина от 8 до 20 символов.
+        """
+
+        # Гарантируем наличие хотя бы одной буквы и одной цифры
+        lower = random.choice(string.ascii_lowercase)  # строчная
+        upper = random.choice(string.ascii_uppercase)  # заглавная
+        digits = random.choice(string.digits)  # цифра
+
+        # Дополняем пароль случайными символами из допустимого набора
+        special_chars = "?@#$%^&*|:"
+        all_chars = string.ascii_letters + string.digits + special_chars
+        if length is None:
+            remaining_length = random.randint(5, 17)
+        else:
+            remaining_length = length - 3
+        # Остальная длина пароля
+        remaining_chars = ''.join(random.choices(all_chars, k=remaining_length))
+
+        # Перемешиваем пароль для рандомизации
+        password = list(lower + upper + digits + remaining_chars)
+        random.shuffle(password)
+
+        return ''.join(password)
+
+
+
+    @staticmethod
+    def generate_random_movie_name():
+        return f"{faker.word().capitalize()} {faker.word().capitalize()}"
+
+
+
+    @staticmethod
+    def generate_genre():
+        return f"{faker.sentence(nb_words=2)}"
+
+
+
+    @staticmethod
+    def generate_random_movie_description():
+        return f"{faker.sentence(nb_words=10)}"
+
+    # Создаем тело запроса отзыва
+    @staticmethod
+    def created_body_for_review():
+        body = {
+
+            "rating": randint(1, 10),
+            "text": faker.sentence(nb_words=10)
+
+        }
+
+        return body
+
+
+    @staticmethod
+    def created_card_data():
+        return {
+            "card_number": faker.credit_card_number(card_type="visa"),
+            "expiration_date": faker.credit_card_expire(),
+            "security_code": random.randint(100, 999)
+        }
+
