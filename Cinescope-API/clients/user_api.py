@@ -15,7 +15,7 @@ class UserApi(CustomRequester):
 
     def get_user_info_for_admin(self, user_id, expected_status=200):
         """
-        ПОлучение информации о пользователе.
+        Получение информации о пользователе.
         :param user_id: АйДи пользователя
         :param expected_status: Ожидаемый статус-код
         """

@@ -6,6 +6,7 @@ from utils.data_generator import DataGenerator
 from random import randint
 from api.api_manager import ApiManager
 from resources.user_creds import SuperAdminCreds
+from entities.user import User
 
 
 
@@ -17,7 +18,6 @@ def random_user_by_user():
     random_email = DataGenerator.generate_random_email()
     random_name = DataGenerator.generate_random_name()
     random_password = DataGenerator.generate_random_password()
-
 
 
     return {
