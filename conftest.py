@@ -278,11 +278,11 @@ def generate_genre_data():
 
 
 @pytest.fixture(scope="function")
-def created_random_genre(generate_genre_data, auth_admin_headers):
-    body = generate_genre_data
-    url_created_genre = f"{BASE_API_URL}{GENRES_ENDPOINT}"
-    response = requests.post(url_created_genre, json=body, headers=auth_admin_headers)
-    print(response.json())
+def created_random_genre(generate_genre_data, super_admin):
+    #body = generate_genre_data
+    #url_created_genre = f"{BASE_API_URL}{GENRES_ENDPOINT}"
+    response = super_admin.api.genres_api.created_genres(generate_genre_data)
+
     return response.json()
 
 
@@ -330,7 +330,7 @@ def super_admin(user_session):
     super_admin = User(
         SuperAdminCreds.USERNAME,
         SuperAdminCreds.PASSWORD,
-        "[Roles.SUPER_ADMIN.value]",
+        [Roles.SUPER_ADMIN.value],
         new_session
     )
 

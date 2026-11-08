@@ -7,10 +7,10 @@ from utils.data_generator import DataGenerator
 
 class TestGenres:
 
-    def test_created_genres(self, api_manager, generate_genre_data):
+    def test_created_genres(self, super_admin, generate_genre_data):
 
-        api_manager.auth_api.authenticate(ADMIN_DATA)
-        response = api_manager.genres_api.created_genres(generate_genre_data)
+        super_admin.api.auth_api.authenticate(ADMIN_DATA)
+        response = super_admin.api.genres_api.created_genres(generate_genre_data)
         response_data = response.json()
 
         # Проверки
@@ -19,9 +19,9 @@ class TestGenres:
 
 
 
-    def test_delete_genres(self, api_manager,  created_random_genre, auth_admin_headers):
-        api_manager.genres_api.headers.update(auth_admin_headers)
-        response = api_manager.genres_api.deleted_genre(created_random_genre)
+    def test_delete_genres(self, super_admin,  created_random_genre, auth_admin_headers):
+        super_admin.api.genres_api.headers.update(auth_admin_headers)
+        response = super_admin.api.genres_api.deleted_genre(created_random_genre)
         response_data = response.json()
 
         # Проверки
