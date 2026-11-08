@@ -1,4 +1,4 @@
-from constants import  ADMIN_DATA
+from constants.constants import  ADMIN_DATA
 import pytest
 from random import randint
 from api.api_manager import ApiManager

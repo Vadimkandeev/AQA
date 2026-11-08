@@ -11,6 +11,9 @@ class User:
     @property
     def creds(self):
         """
-        Возвращает кортеж (email, password)
+        Возвращает словарь (email, password)
         """
-        return self.email, self.password
+        return {
+            "email": self.email,
+            "password": self.password
+        }

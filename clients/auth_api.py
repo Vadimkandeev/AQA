@@ -1,5 +1,5 @@
 from custom_requester.custom_requester import CustomRequester
-from constants import REGISTER_ENDPOINT, LOGIN_ENDPOINT, LOGOUT_ENDPOINT,REFRESH_TOKENS_ENDPOINT, CONFIRM_ENDPOINT,\
+from constants.constants import REGISTER_ENDPOINT, LOGIN_ENDPOINT, LOGOUT_ENDPOINT,REFRESH_TOKENS_ENDPOINT, CONFIRM_ENDPOINT,\
     BASE_URL, USER_ENDPOINT
 
 class AuthApi(CustomRequester):
@@ -23,7 +23,7 @@ class AuthApi(CustomRequester):
             expected_status=expected_status
         )
 
-    def login_user(self, login_data, expected_status=201):
+    def login_user(self, login_data, expected_status=200):
         """
         Авторизация пользователя.
         :param login_data: Данные для логина

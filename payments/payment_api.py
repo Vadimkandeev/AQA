@@ -1,5 +1,5 @@
 from custom_requester.custom_requester import CustomRequester
-from constants import BASE_PAYMENT_URL, CREATE_ENDPOINT, USER_ENDPOINT, FIND_ALL_ENDPOINT
+from constants.constants import BASE_PAYMENT_URL, CREATE_ENDPOINT, USER_ENDPOINT, FIND_ALL_ENDPOINT
 
 class PaymentApi(CustomRequester):
     """

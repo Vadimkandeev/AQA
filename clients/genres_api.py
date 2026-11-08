@@ -1,5 +1,5 @@
 from custom_requester.custom_requester import CustomRequester
-from constants import GENRES_ENDPOINT, BASE_API_URL
+from constants.constants import GENRES_ENDPOINT, BASE_API_URL
 
 class GenresApi(CustomRequester):
     def __init__(self, session):

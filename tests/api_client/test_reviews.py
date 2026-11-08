@@ -1,4 +1,4 @@
-from constants import  ADMIN_DATA, PARAMS_FOR_GETLIST_MOVIES
+from constants.constants import  ADMIN_DATA, PARAMS_FOR_GETLIST_MOVIES
 import pytest
 from random import randint
 from api.api_manager import ApiManager
@@ -12,7 +12,7 @@ class TestReviews:
     def test_create_new_review(self, api_manager, created_movie, auth_admin_headers):
         api_manager.review_api.headers.update(auth_admin_headers)
         review_data = DataGenerator.created_body_for_review()
-        response = api_manager.review_api.created_new_review(created_movie, review_data)
+        response = api_manager.review_api.created_review(created_movie, review_data)
 
         response_data = response.json()
 

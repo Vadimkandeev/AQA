@@ -1,5 +1,5 @@
 from custom_requester.custom_requester import CustomRequester
-from constants import REGISTER_ENDPOINT, LOGIN_ENDPOINT, BASE_API_URL, USER_ENDPOINT, BODY_FROM_CHANGE_USER_DATA,\
+from constants.constants import REGISTER_ENDPOINT, LOGIN_ENDPOINT, BASE_URL, USER_ENDPOINT, BODY_FROM_CHANGE_USER_DATA,\
 PARAMS_FOR_GETLIST_MOVIES
 
 
@@ -9,7 +9,7 @@ class UserApi(CustomRequester):
     """
 
     def __init__(self, session):
-        super().__init__(session=session, base_url=BASE_API_URL, )
+        super().__init__(session=session, base_url=BASE_URL, )
         self.session = session
 
 

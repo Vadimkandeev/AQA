@@ -1,5 +1,5 @@
 import requests
-from constants import BASE_URL, HEADERS, REGISTER_ENDPOINT, LOGIN_ENDPOINT, ADMIN_DATA, USER_ENDPOINT, LOGOUT_ENDPOINT,\
+from constants.constants import BASE_URL, HEADERS, REGISTER_ENDPOINT, LOGIN_ENDPOINT, ADMIN_DATA, USER_ENDPOINT, LOGOUT_ENDPOINT,\
     MOVIES_ENDPOINT, REVIEW_ENDPOINT, BASE_API_URL, GENRES_ENDPOINT
 import pytest
 from utils.data_generator import DataGenerator
@@ -7,7 +7,7 @@ from random import randint
 from api.api_manager import ApiManager
 from resources.user_creds import SuperAdminCreds
 from entities.user import User
-
+from constants.roles import Roles
 
 
 @pytest.fixture(scope="function")
@@ -24,7 +24,8 @@ def random_user_by_user():
         "email": random_email,
         "fullName": random_name,
         "password": random_password,
-        "passwordRepeat": random_password
+        "passwordRepeat": random_password,
+        "roles": [Roles.USER.value]
     }
 
 @pytest.fixture(scope = "function")
@@ -38,6 +39,7 @@ def random_user_by_admin():
         "email": random_email,
         "fullName": random_name,
         "password": random_password,
+        "roles": [Roles.USER.value],
         "verified" : True,
         "banned" : False
     }
@@ -97,7 +99,7 @@ def admin_tokens():
     login_url = f"{BASE_URL}{LOGIN_ENDPOINT}"
     login_data = ADMIN_DATA
     response = requests.post(login_url, json=login_data, headers=HEADERS)
-    assert response.status_code == 201, "Ошибка авторизации"
+    assert response.status_code == 200, "Ошибка авторизации"
 
     # Получаем токен
     data = response.json()
@@ -328,11 +330,25 @@ def super_admin(user_session):
     super_admin = User(
         SuperAdminCreds.USERNAME,
         SuperAdminCreds.PASSWORD,
-        "[SUPER_ADMIN]",
+        "[Roles.SUPER_ADMIN.value]",
         new_session
     )
 
-    super_admin.api.auth_api.authentifacate(super_admin.creds)
+    super_admin.api.auth_api.authenticate(super_admin.creds)
     return super_admin
 
+
+@pytest.fixture
+def common_user(user_session, super_admin, random_user_by_admin):
+    new_session = user_session()
+
+    common_user = User(
+        random_user_by_admin['email'],
+        random_user_by_admin['password'],
+        [Roles.USER.value],
+        new_session
+    )
+    super_admin.api.user_api.create_user(random_user_by_admin)
+    common_user.api.auth_api.authenticate(common_user.creds)
+    return common_user
 

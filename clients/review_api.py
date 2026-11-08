@@ -1,5 +1,5 @@
 from custom_requester.custom_requester import CustomRequester
-from constants import MOVIES_ENDPOINT, BASE_API_URL, REVIEW_ENDPOINT
+from constants.constants import MOVIES_ENDPOINT, BASE_API_URL, REVIEW_ENDPOINT
 
 
 class ReviewsApi(CustomRequester):
