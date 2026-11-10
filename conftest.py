@@ -55,9 +55,8 @@ def created_user_by_user(random_user_by_user):
     assert response.status_code == 201, "Ошибка регистрации пользователя"
     assert body['fullName'] == random_user_by_user['fullName']
 
-
-
     return body
+
 
 
 # Создаем нового пользователя от имени админа
@@ -352,3 +351,18 @@ def common_user(user_session, super_admin, random_user_by_admin):
     common_user.api.auth_api.authenticate(common_user.creds)
     return common_user
 
+
+
+@pytest.fixture
+def admin(user_session):
+    new_session = user_session()
+
+    admin = User(
+        SuperAdminCreds.USERNAME,
+        SuperAdminCreds.PASSWORD,
+        [Roles.ADMIN.value],
+        new_session
+    )
+
+    admin.api.auth_api.authenticate(admin.creds)
+    return admin
